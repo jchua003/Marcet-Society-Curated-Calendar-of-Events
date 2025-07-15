@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, MapPin, Clock, Users, BookOpen, Palette, Music, Search, Plus, ExternalLink } from 'lucide-react';
 import './App.css';
 
@@ -9,6 +9,46 @@ const App = () => {
   const [selectedInstitution, setSelectedInstitution] = useState('all');
   const [isConnected, setIsConnected] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [googleAuth, setGoogleAuth] = useState(null);
+
+  // Replace with your OAuth Client ID
+  const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID_HERE';
+  
+  // Google Calendar API configuration
+  const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
+  const SCOPES = 'https://www.googleapis.com/auth/calendar.events';
+
+  // Initialize Google API
+  useEffect(() => {
+    const initializeGoogleAuth = async () => {
+      try {
+        await new Promise((resolve) => {
+          window.gapi.load('auth2', resolve);
+        });
+        
+        await window.gapi.client.init({
+          apiKey: '', // We don't need API key for OAuth
+          clientId: GOOGLE_CLIENT_ID,
+          discoveryDocs: [DISCOVERY_DOC],
+          scope: SCOPES
+        });
+
+        const authInstance = window.gapi.auth2.getAuthInstance();
+        setGoogleAuth(authInstance);
+        
+        // Check if user is already signed in
+        if (authInstance.isSignedIn.get()) {
+          setIsConnected(true);
+        }
+      } catch (error) {
+        console.error('Error initializing Google Auth:', error);
+      }
+    };
+
+    if (window.gapi) {
+      initializeGoogleAuth();
+    }
+  }, []);
 
   const cities = [
     'New York', 'Los Angeles', 'San Francisco', 'London', 'Washington DC', 'Boston', 'Chicago'
@@ -261,15 +301,93 @@ const App = () => {
     setSelectedEvents(newSelected);
   };
 
-  const connectCalendar = () => {
-    setIsConnected(true);
-    alert('Calendar connected! (This is a demo - real integration coming soon)');
+  const connectCalendar = async () => {
+    if (!googleAuth) {
+      alert('Google Auth is not initialized yet. Please wait and try again.');
+      return;
+    }
+
+    try {
+      await googleAuth.signIn();
+      setIsConnected(true);
+      alert('Successfully connected to Google Calendar!');
+    } catch (error) {
+      console.error('Error connecting to Google Calendar:', error);
+      alert('Failed to connect to Google Calendar. Please try again.');
+    }
   };
 
-  const addSelectedToCalendar = () => {
-    if (selectedEvents.size > 0) {
-      alert(`Demo: Would add ${selectedEvents.size} events to calendar!`);
+  const convertTo24Hour = (time12h) => {
+    const [time, modifier] = time12h.split(' ');
+    let [hours, minutes] = time.split(':');
+    if (hours === '12') hours = '00';
+    if (modifier === 'PM') hours = parseInt(hours, 10) + 12;
+    return `${hours.padStart(2, '0')}:${minutes}`;
+  };
+
+  const addSelectedToCalendar = async () => {
+    if (!isConnected) {
+      alert('Please connect your Google Calendar first.');
+      return;
     }
+
+    if (selectedEvents.size === 0) {
+      alert('Please select at least one event.');
+      return;
+    }
+
+    try {
+      const eventsToAdd = Array.from(selectedEvents).map(eventId => {
+        const event = sampleEvents.find(e => e.id === eventId);
+        const startTime = convertTo24Hour(event.time);
+        const startDateTime = `${event.date}T${startTime}:00`;
+        
+        // Calculate end time (add 2 hours as default)
+        const endTime = new Date(`${event.date}T${startTime}:00`);
+        endTime.setHours(endTime.getHours() + 2);
+        const endDateTime = endTime.toISOString().slice(0, 19);
+
+        return {
+          summary: event.title,
+          description: `${event.description}\n\nVenue: ${getInstitutionName(event.museum)}\nPrice: ${event.price}\nDuration: ${event.duration}`,
+          location: getInstitutionName(event.museum),
+          start: {
+            dateTime: startDateTime,
+            timeZone: 'America/New_York'
+          },
+          end: {
+            dateTime: endDateTime,
+            timeZone: 'America/New_York'
+          }
+        };
+      });
+
+      // Add events to Google Calendar
+      let successCount = 0;
+      for (const event of eventsToAdd) {
+        try {
+          await window.gapi.client.calendar.events.insert({
+            calendarId: 'primary',
+            resource: event
+          });
+          successCount++;
+        } catch (error) {
+          console.error('Error adding event:', error);
+        }
+      }
+
+      alert(`Successfully added ${successCount} event(s) to your calendar!`);
+      setSelectedEvents(new Set()); // Clear selections
+    } catch (error) {
+      console.error('Error adding events to calendar:', error);
+      alert('Failed to add events to calendar. Please try again.');
+    }
+  };
+
+  const getInstitutionName = (institutionId) => {
+    const institutions = institutionsByCity[selectedCity] || [];
+    const institution = institutions.find(inst => inst.id === institutionId);
+    return institution ? institution.name : 'Unknown Institution';
   };
 
   const getInstitutionShortName = (institutionId) => {
@@ -416,9 +534,14 @@ const App = () => {
                   </h4>
                   <button 
                     onClick={addSelectedToCalendar}
-                    className="w-full bg-rose-400 text-white py-2 px-4 rounded-lg hover:bg-rose-500 transition-colors duration-200"
+                    disabled={!isConnected}
+                    className={`w-full py-2 px-4 rounded-lg transition-colors duration-200 ${
+                      isConnected
+                        ? 'bg-rose-400 text-white hover:bg-rose-500'
+                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    }`}
                   >
-                    Add to Calendar
+                    {isConnected ? 'Add to My Calendar' : 'Connect Calendar First'}
                   </button>
                 </div>
               )}
