@@ -28,7 +28,7 @@ const App = () => {
         }
 
         await new Promise((resolve) => {
-          window.gapi.load('auth2', resolve);
+           window.gapi.load('client:auth2', resolve);
         });
         
         await window.gapi.client.init({
