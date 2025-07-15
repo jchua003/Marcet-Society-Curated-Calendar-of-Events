@@ -262,7 +262,6 @@ const App = () => {
   };
 
   const connectCalendar = () => {
-    // For now, just simulate connection
     setIsConnected(true);
     alert('Calendar connected! (This is a demo - real integration coming soon)');
   };
@@ -281,7 +280,6 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-stone-100">
-      {/* Header */}
       <header className="bg-white shadow-sm border-b border-stone-200">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="text-center mb-8">
@@ -304,7 +302,6 @@ const App = () => {
             </div>
           </div>
 
-          {/* City Selector */}
           <div className="mb-6">
             <h3 className="text-lg font-serif text-stone-700 mb-3 text-center">Select City</h3>
             <div className="flex flex-wrap justify-center gap-2">
@@ -324,7 +321,6 @@ const App = () => {
             </div>
           </div>
 
-          {/* Institution Selector */}
           <div className="mb-6">
             <h3 className="text-lg font-serif text-stone-700 mb-3 text-center">Select Institution</h3>
             <div className="flex flex-wrap justify-center gap-2 max-w-5xl mx-auto">
@@ -354,7 +350,6 @@ const App = () => {
             </div>
           </div>
 
-          {/* Calendar Connection */}
           <div className="text-center">
             {!isConnected ? (
               <button
@@ -374,15 +369,12 @@ const App = () => {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar Filters */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow-sm p-6 border border-stone-200">
               <h3 className="text-lg font-serif text-stone-800 mb-4">Filter Events</h3>
               
-              {/* Search */}
               <div className="mb-6">
                 <div className="relative">
                   <Search className="absolute left-3 top-3 w-4 h-4 text-stone-400" />
@@ -396,7 +388,6 @@ const App = () => {
                 </div>
               </div>
 
-              {/* Event Types */}
               <div className="space-y-2 mb-6">
                 <label className="block text-sm font-medium text-stone-700 mb-2">Event Type</label>
                 {eventTypes.map(type => {
@@ -418,7 +409,6 @@ const App = () => {
                 })}
               </div>
 
-              {/* Selected Events Summary */}
               {selectedEvents.size > 0 && (
                 <div className="mt-6 p-4 bg-stone-50 rounded-lg border border-stone-200">
                   <h4 className="font-medium text-stone-800 mb-2">
@@ -435,7 +425,6 @@ const App = () => {
             </div>
           </div>
 
-          {/* Events List */}
           <div className="lg:col-span-3">
             <div className="mb-6">
               <h2 className="text-2xl font-serif text-stone-800 mb-2">
@@ -524,7 +513,6 @@ const App = () => {
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="bg-white border-t border-stone-200 mt-16">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="text-center text-stone-600">

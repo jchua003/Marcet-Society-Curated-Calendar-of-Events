@@ -1,100 +1,48 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Custom styles for the Marcet Society Calendar */
-.font-serif {
-  font-family: 'Georgia', 'Times New Roman', serif;
-}
-
-/* Ensure proper font loading */
+/* Import fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Basic styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 body {
   font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
   background-color: #f8fafc;
+  color: #292524;
 }
 
-/* Additional custom styles if needed */
-.bg-gradient-to-br {
-  background: linear-gradient(to bottom right, #f8fafc, #e7e5e4);
-}
-
-/* Rose color palette */
+/* Utility classes - Rose theme */
 .bg-rose-50 { background-color: #fff1f2; }
 .bg-rose-100 { background-color: #ffe4e6; }
 .bg-rose-400 { background-color: #fb7185; }
 .bg-rose-500 { background-color: #f43f5e; }
-.bg-rose-600 { background-color: #e11d48; }
-
 .text-rose-600 { color: #e11d48; }
 .text-rose-700 { color: #be123c; }
 .text-rose-800 { color: #9f1239; }
-
 .border-rose-200 { border-color: #fecdd3; }
 .border-rose-300 { border-color: #fda4af; }
 .border-rose-400 { border-color: #fb7185; }
 
-.ring-rose-300 { --tw-ring-color: #fda4af; }
-
-/* Stone color palette */
+/* Stone colors */
 .bg-stone-50 { background-color: #fafaf9; }
 .bg-stone-100 { background-color: #f5f5f4; }
 .bg-stone-200 { background-color: #e7e5e4; }
-
 .text-stone-500 { color: #78716c; }
 .text-stone-600 { color: #57534e; }
 .text-stone-700 { color: #44403c; }
 .text-stone-800 { color: #292524; }
-
 .border-stone-100 { border-color: #f5f5f4; }
 .border-stone-200 { border-color: #e7e5e4; }
 .border-stone-300 { border-color: #d6d3d1; }
 
-/* Blue accents */
+/* Blue colors */
 .bg-blue-100 { background-color: #dbeafe; }
 .text-blue-700 { color: #1d4ed8; }
 
-/* Slate background */
-.from-slate-50 { --tw-gradient-from: #f8fafc; }
-.to-stone-100 { --tw-gradient-to: #f5f5f4; }
-
-/* Responsive utilities */
-@media (min-width: 1024px) {
-  .lg\:col-span-1 { grid-column: span 1 / span 1; }
-  .lg\:col-span-3 { grid-column: span 3 / span 3; }
-}
-
-/* Animation utilities */
-.transition-all { transition: all 0.15s ease-in-out; }
-.transition-colors { transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out; }
-.duration-200 { transition-duration: 200ms; }
-
-/* Shadow utilities */
-.shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
-.shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
-.shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
-
-/* Hover effects */
-.hover\:bg-stone-50:hover { background-color: #fafaf9; }
-.hover\:bg-stone-100:hover { background-color: #f5f5f4; }
-.hover\:bg-stone-200:hover { background-color: #e7e5e4; }
-.hover\:bg-rose-500:hover { background-color: #f43f5e; }
-.hover\:border-rose-300:hover { border-color: #fda4af; }
-.hover\:border-stone-300:hover { border-color: #d6d3d1; }
-.hover\:text-stone-700:hover { color: #44403c; }
-.hover\:shadow-md:hover { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
-.hover\:shadow-lg:hover { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
-
-/* Focus styles */
-.focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
-.focus\:ring-2:focus { --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color); --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color); box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000); }
-.focus\:border-rose-400:focus { border-color: #fb7185; }
-.focus\:ring-rose-300:focus { --tw-ring-color: #fda4af; }
-
-/* Make sure all essential utility classes are available */
+/* Layout utilities */
 .min-h-screen { min-height: 100vh; }
 .max-w-7xl { max-width: 80rem; }
 .max-w-2xl { max-width: 42rem; }
@@ -127,6 +75,8 @@ body {
 .mr-1 { margin-right: 0.25rem; }
 .ml-4 { margin-left: 1rem; }
 .ml-1 { margin-left: 0.25rem; }
+
+/* Size utilities */
 .w-16 { width: 4rem; }
 .w-5 { width: 1.25rem; }
 .w-4 { width: 1rem; }
@@ -136,6 +86,8 @@ body {
 .h-5 { height: 1.25rem; }
 .h-4 { height: 1rem; }
 .h-3 { height: 0.75rem; }
+
+/* Text utilities */
 .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
 .text-2xl { font-size: 1.5rem; line-height: 2rem; }
 .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
@@ -148,6 +100,9 @@ body {
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .text-white { color: #ffffff; }
+.font-serif { font-family: 'Georgia', 'Times New Roman', serif; }
+
+/* Background and borders */
 .bg-white { background-color: #ffffff; }
 .border { border-width: 1px; }
 .border-2 { border-width: 2px; }
@@ -156,6 +111,8 @@ body {
 .border-l-4 { border-left-width: 4px; }
 .rounded-lg { border-radius: 0.5rem; }
 .rounded-full { border-radius: 9999px; }
+
+/* Layout */
 .cursor-pointer { cursor: pointer; }
 .inline-block { display: inline-block; }
 .inline-flex { display: inline-flex; }
@@ -180,10 +137,43 @@ body {
 .space-y-2 > :not([hidden]) ~ :not([hidden]) { margin-top: 0.5rem; margin-bottom: 0; }
 .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
 .leading-relaxed { line-height: 1.625; }
-.z-10 { z-index: 10; }
 
+/* Responsive */
 @media (min-width: 1024px) {
   .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .lg\:col-span-1 { grid-column: span 1 / span 1; }
+  .lg\:col-span-3 { grid-column: span 3 / span 3; }
+}
+
+/* Shadows and effects */
+.shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+.shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+.shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+
+/* Transitions */
+.transition-all { transition: all 0.15s ease-in-out; }
+.transition-colors { transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out; }
+.duration-200 { transition-duration: 200ms; }
+
+/* Hover states */
+.hover\:bg-stone-50:hover { background-color: #fafaf9; }
+.hover\:bg-stone-100:hover { background-color: #f5f5f4; }
+.hover\:bg-stone-200:hover { background-color: #e7e5e4; }
+.hover\:bg-rose-500:hover { background-color: #f43f5e; }
+.hover\:border-rose-300:hover { border-color: #fda4af; }
+.hover\:border-stone-300:hover { border-color: #d6d3d1; }
+.hover\:text-stone-700:hover { color: #44403c; }
+.hover\:shadow-md:hover { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+.hover\:shadow-lg:hover { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+
+/* Focus states */
+.focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+.focus\:ring-2:focus { box-shadow: 0 0 0 2px #fda4af; }
+.focus\:border-rose-400:focus { border-color: #fb7185; }
+
+/* Background gradient */
+.bg-gradient-to-br {
+  background: linear-gradient(to bottom right, #f8fafc, #e7e5e4);
 }
 
 /* Ensure proper button styling */
