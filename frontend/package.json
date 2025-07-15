@@ -1,6 +1,5 @@
 {
   "name": "marcet-society-calendar",
-  "homepage": "https://jchua003.github.io/Marcet-Society-Curated-Calendar-of-Events",
   "version": "1.0.0",
   "homepage": "https://jchua003.github.io/Marcet-Society-Curated-Calendar-of-Events",
   "description": "Curated Calendar of Events in Major U.S. Cities with Google Calendar Integration",
@@ -16,9 +15,9 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.3.0",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24"
   },
   "scripts": {
     "start": "react-scripts start",
