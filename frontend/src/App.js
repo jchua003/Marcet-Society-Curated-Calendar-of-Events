@@ -11,7 +11,7 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [googleAuth, setGoogleAuth] = useState(null);
 
-  // Replace with your OAuth Client ID
+  // Replace with your OAuth Client ID from Google Cloud Console
   const GOOGLE_CLIENT_ID = '922415648629-7f6jn9v2vej7ka1knnnukvpi0i283tuk.apps.googleusercontent.com';
   
   // Google Calendar API configuration
@@ -22,13 +22,17 @@ const App = () => {
   useEffect(() => {
     const initializeGoogleAuth = async () => {
       try {
+        if (!window.gapi) {
+          console.log('Google API not loaded yet');
+          return;
+        }
+
         await new Promise((resolve) => {
           window.gapi.load('auth2', resolve);
         });
         
         await window.gapi.client.init({
-          apiKey: '', // We don't need API key for OAuth
-          clientId: '922415648629-7f6jn9v2vej7ka1knnnukvpi0i283tuk.apps.googleusercontent.com'
+          clientId: GOOGLE_CLIENT_ID,
           discoveryDocs: [DISCOVERY_DOC],
           scope: SCOPES
         });
@@ -45,10 +49,17 @@ const App = () => {
       }
     };
 
-    if (window.gapi) {
-      initializeGoogleAuth();
-    }
-  }, []);
+    // Wait for Google API to load
+    const checkGoogleAPI = () => {
+      if (window.gapi) {
+        initializeGoogleAuth();
+      } else {
+        setTimeout(checkGoogleAPI, 100);
+      }
+    };
+    
+    checkGoogleAPI();
+  }, [GOOGLE_CLIENT_ID, DISCOVERY_DOC, SCOPES]);
 
   const cities = [
     'New York', 'Los Angeles', 'San Francisco', 'London', 'Washington DC', 'Boston', 'Chicago'
@@ -303,7 +314,7 @@ const App = () => {
 
   const connectCalendar = async () => {
     if (!googleAuth) {
-      alert('Google Auth is not initialized yet. Please wait and try again.');
+      alert('Google Auth is not initialized yet. Please wait a moment and try again.');
       return;
     }
 
