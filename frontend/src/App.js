@@ -28,7 +28,7 @@ const App = () => {
         
         await window.gapi.client.init({
           apiKey: '', // We don't need API key for OAuth
-          clientId: GOOGLE_CLIENT_ID,
+          clientId: '922415648629-7f6jn9v2vej7ka1knnnukvpi0i283tuk.apps.googleusercontent.com'
           discoveryDocs: [DISCOVERY_DOC],
           scope: SCOPES
         });
