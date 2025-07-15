@@ -12,7 +12,7 @@ const App = () => {
   const [googleAuth, setGoogleAuth] = useState(null);
 
   // Replace with your OAuth Client ID
-  const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID_HERE';
+  const GOOGLE_CLIENT_ID = '922415648629-7f6jn9v2vej7ka1knnnukvpi0i283tuk.apps.googleusercontent.com';
   
   // Google Calendar API configuration
   const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
