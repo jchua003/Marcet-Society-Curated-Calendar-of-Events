@@ -1,0 +1,62 @@
+[
+  {
+    "title": "Impressionist Masterpieces: A Special Exhibition",
+    "museum": "met",
+    "date": "2025-07-23",
+    "time": "10:00 AM",
+    "type": "exhibitions",
+    "description": "Explore the world of Impressionism through masterpieces from our collection, featuring works by Monet, Renoir, and Degas.",
+    "city": "New York",
+    "price": "$25",
+    "duration": "All day",
+    "link": "https://www.metmuseum.org/events"
+  },
+  {
+    "title": "Contemporary Art Discussion Panel",
+    "museum": "moma",
+    "date": "2025-07-26",
+    "time": "6:30 PM",
+    "type": "panel",
+    "description": "Join contemporary artists and curators for an engaging discussion about modern art movements and their impact on society.",
+    "city": "New York",
+    "price": "$15",
+    "duration": "2 hours",
+    "link": "https://www.moma.org/calendar"
+  },
+  {
+    "title": "Women in Science: Historical Perspectives",
+    "museum": "nyhs",
+    "date": "2025-07-30",
+    "time": "2:00 PM",
+    "type": "lecture",
+    "description": "A fascinating lecture exploring the contributions of women scientists throughout history and their lasting impact.",
+    "city": "New York",
+    "price": "Free",
+    "duration": "90 minutes",
+    "link": "https://www.nyhistory.org/events"
+  },
+  {
+    "title": "Asian Literature Book Launch",
+    "museum": "asia",
+    "date": "2025-08-06",
+    "time": "7:00 PM",
+    "type": "talks",
+    "description": "Author reading and discussion of contemporary Asian literature and its global influence on modern culture.",
+    "city": "New York",
+    "price": "$10",
+    "duration": "90 minutes",
+    "link": "https://asiasociety.org/new-york/events"
+  },
+  {
+    "title": "Renaissance Art Gallery Tour",
+    "museum": "frick",
+    "date": "2025-08-13",
+    "time": "4:00 PM",
+    "type": "tour",
+    "description": "Guided tour through our Renaissance collection, exploring the artistic techniques and cultural context of the period.",
+    "city": "New York",
+    "price": "$40",
+    "duration": "2 hours",
+    "link": "https://www.frick.org/events"
+  }
+]

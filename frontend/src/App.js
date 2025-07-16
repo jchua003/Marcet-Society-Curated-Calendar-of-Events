@@ -53,186 +53,71 @@ const App = () => {
   };
 
   const sampleEvents = [
-    {
-      id: 1,
-      title: 'Women in Science: Revolutionary Discoveries',
-      museum: 'womens',
-      date: '2025-07-20',
-      time: '2:00 PM',
-      type: 'lecture',
-      description: 'Explore groundbreaking discoveries by women scientists and their lasting impact on our understanding of the natural world.',
-      city: 'New York',
-      price: 'Free',
-      duration: '90 minutes'
-    },
-    {
-      id: 2,
-      title: 'Impressionist Masterpieces Exhibition',
-      museum: 'met',
-      date: '2025-07-22',
-      time: '10:00 AM',
-      type: 'exhibitions',
-      description: 'A comprehensive look at Impressionist works from the museum\'s collection, featuring rarely displayed pieces.',
-      city: 'New York',
-      price: '$25',
-      duration: 'All day'
-    },
-    {
-      id: 3,
-      title: 'Contemporary Art Discussion',
-      museum: 'moma',
-      date: '2025-07-25',
-      time: '6:30 PM',
-      type: 'panel',
-      description: 'Join contemporary artists and curators for an engaging panel discussion on modern art movements.',
-      city: 'New York',
-      price: '$15',
-      duration: '2 hours'
-    },
-    {
-      id: 4,
-      title: 'Book Launch: Asian Literature Today',
-      museum: 'asia',
-      date: '2025-07-24',
-      time: '7:00 PM',
-      type: 'talks',
-      description: 'Author reading and discussion of contemporary Asian literature and its global influence.',
-      city: 'New York',
-      price: '$10',
-      duration: '90 minutes'
-    },
-    {
-      id: 5,
-      title: 'Renaissance Art History Seminar',
-      museum: 'ifa',
-      date: '2025-07-26',
-      time: '3:00 PM',
-      type: 'lecture',
-      description: 'Graduate-level seminar exploring Renaissance artistic techniques and cultural context.',
-      city: 'New York',
-      price: '$30',
-      duration: '3 hours'
-    },
-    {
-      id: 6,
-      title: 'Garden Party & Poetry Reading',
-      museum: 'frick',
-      date: '2025-07-27',
-      time: '4:00 PM',
-      type: 'special',
-      description: 'Special afternoon poetry reading in the beautiful Frick Collection garden courtyard.',
-      city: 'New York',
-      price: '$40',
-      duration: '2 hours'
-    },
-    {
-      id: 7,
-      title: 'Literary Salon: Women Writers',
-      museum: 'nysl',
-      date: '2025-07-28',
-      time: '6:00 PM',
-      type: 'talks',
-      description: 'Monthly salon discussing influential women writers and their contributions to literature.',
-      city: 'New York',
-      price: '$20',
-      duration: '2 hours'
-    },
-    {
-      id: 8,
-      title: 'Book Arts Workshop',
-      museum: 'grolier',
-      date: '2025-07-29',
-      time: '10:00 AM',
-      type: 'special',
-      description: 'Hands-on workshop in traditional bookbinding and letterpress printing techniques.',
-      city: 'New York',
-      price: '$65',
-      duration: '4 hours'
-    },
-    {
-      id: 9,
-      title: 'Exploration Photography Exhibition',
-      museum: 'explorers',
-      date: '2025-07-30',
-      time: '11:00 AM',
-      type: 'exhibitions',
-      description: 'Stunning photography from recent expeditions to remote corners of the world.',
-      city: 'New York',
-      price: '$15',
-      duration: 'All day'
-    },
-    {
-      id: 10,
-      title: 'French Literature Circle',
-      museum: 'albertine',
-      date: '2025-07-31',
-      time: '7:30 PM',
-      type: 'talks',
-      description: 'Monthly discussion of contemporary French literature with wine and light refreshments.',
-      city: 'New York',
-      price: '$25',
-      duration: '90 minutes'
-    },
-    {
-      id: 11,
-      title: 'Contemporary Poetry Workshop',
-      museum: 'poetry',
-      date: '2025-08-01',
-      time: '2:00 PM',
-      type: 'special',
-      description: 'Interactive workshop for aspiring poets to develop their craft and share their work.',
-      city: 'New York',
-      price: '$35',
-      duration: '3 hours'
-    },
-    {
-      id: 12,
-      title: 'Art & Philosophy Panel',
-      museum: 'nac',
-      date: '2025-08-02',
-      time: '1:00 PM',
-      type: 'panel',
-      description: 'Interdisciplinary panel discussion on the relationship between artistic expression and philosophical thought.',
-      city: 'New York',
-      price: '$20',
-      duration: '2.5 hours'
-    },
-    {
-      id: 13,
-      title: 'Historical NYC Walking Tour',
-      museum: 'nyhs',
-      date: '2025-08-03',
-      time: '10:00 AM',
-      type: 'tour',
-      description: 'Guided walking tour exploring the hidden history of Manhattan with historical society experts.',
-      city: 'New York',
-      price: '$30',
-      duration: '3 hours'
-    },
-    {
-      id: 14,
-      title: 'Book Signing: Art & Culture',
-      museum: 'rizzoli',
-      date: '2025-08-04',
-      time: '6:00 PM',
-      type: 'talks',
-      description: 'Author book signing and talk about the intersection of art and cultural identity.',
-      city: 'New York',
-      price: 'Free',
-      duration: '1 hour'
-    },
-    {
-      id: 15,
-      title: 'French Cultural Evening',
-      museum: 'alliance',
-      date: '2025-08-05',
-      time: '7:00 PM',
-      type: 'performances',
-      description: 'Evening of French music, poetry, and performance celebrating francophone culture.',
-      city: 'New York',
-      price: '$18',
-      duration: '2 hours'
-    }
+  {
+    id: 1,
+    title: 'Impressionist Masterpieces: A Special Exhibition',
+    museum: 'met',
+    date: '2025-07-23',
+    time: '10:00 AM',
+    type: 'exhibitions',
+    description: 'Explore the world of Impressionism through masterpieces from our collection, featuring works by Monet, Renoir, and Degas.',
+    city: 'New York',
+    price: '$25',
+    duration: 'All day',
+    link: 'https://www.metmuseum.org/events'
+  },
+  {
+    id: 2,
+    title: 'Contemporary Art Discussion Panel',
+    museum: 'moma',
+    date: '2025-07-26',
+    time: '6:30 PM',
+    type: 'panel',
+    description: 'Join contemporary artists and curators for an engaging discussion about modern art movements and their impact on society.',
+    city: 'New York',
+    price: '$15',
+    duration: '2 hours',
+    link: 'https://www.moma.org/calendar'
+  },
+  {
+    id: 3,
+    title: 'Women in Science: Historical Perspectives',
+    museum: 'nyhs',
+    date: '2025-07-30',
+    time: '2:00 PM',
+    type: 'lecture',
+    description: 'A fascinating lecture exploring the contributions of women scientists throughout history and their lasting impact.',
+    city: 'New York',
+    price: 'Free',
+    duration: '90 minutes',
+    link: 'https://www.nyhistory.org/events'
+  },
+  {
+    id: 4,
+    title: 'Asian Literature Book Launch',
+    museum: 'asia',
+    date: '2025-08-06',
+    time: '7:00 PM',
+    type: 'talks',
+    description: 'Author reading and discussion of contemporary Asian literature and its global influence on modern culture.',
+    city: 'New York',
+    price: '$10',
+    duration: '90 minutes',
+    link: 'https://asiasociety.org/new-york/events'
+  },
+  {
+    id: 5,
+    title: 'Renaissance Art Gallery Tour',
+    museum: 'frick',
+    date: '2025-08-13',
+    time: '4:00 PM',
+    type: 'tour',
+    description: 'Guided tour through our Renaissance collection, exploring the artistic techniques and cultural context of the period.',
+    city: 'New York',
+    price: '$40',
+    duration: '2 hours',
+    link: 'https://www.frick.org/events'
+  }
   ];
 
   const filteredEvents = sampleEvents.filter(event => {
@@ -489,7 +374,10 @@ const App = () => {
                           {getInstitutionShortName(event.museum)}
                         </span>
                       </div>
-                      <button className="text-stone-500 hover:text-stone-700 text-sm flex items-center">
+                      <button 
+                        onClick={() => window.open(event.link, '_blank')}
+                        className="text-stone-500 hover:text-stone-700 text-sm flex items-center"
+                      >
                         Learn More <ExternalLink className="w-3 h-3 ml-1" />
                       </button>
                     </div>
