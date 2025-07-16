@@ -343,13 +343,20 @@ const App = () => {
     }
   };
 
-  const convertTo24Hour = (time12h) => {
-    const [time, modifier] = time12h.split(' ');
-    let [hours, minutes] = time.split(':');
-    if (hours === '12') hours = '00';
-    if (modifier === 'PM') hours = parseInt(hours, 10) + 12;
-    return `${hours.padStart(2, '0')}:${minutes}`;
-  };
+ const convertTo24Hour = (time12h) => {
+  const [time, modifier] = time12h.split(' ');
+  let [hours, minutes] = time.split(':');
+  
+  hours = parseInt(hours, 10);
+  
+  if (modifier === 'PM' && hours !== 12) {
+    hours += 12;
+  } else if (modifier === 'AM' && hours === 12) {
+    hours = 0;
+  }
+  
+  return `${hours.toString().padStart(2, '0')}:${minutes}`;
+};
 
  const addSelectedToCalendar = async () => {
   if (!isConnected || !accessToken) {
