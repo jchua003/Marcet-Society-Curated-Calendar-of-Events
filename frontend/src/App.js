@@ -13,7 +13,7 @@ const App = () => {
   const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
 
   // Replace with your OAuth Client ID from Google Cloud Console
-  const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID_HERE';
+  const GOOGLE_CLIENT_ID = '922415648629-7f6jn9v2vej7ka1knnnukvpi0i283tuk.apps.googleusercontent.com';
 
   // Initialize Google APIs
   useEffect(() => {
