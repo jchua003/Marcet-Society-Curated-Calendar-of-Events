@@ -9,50 +9,58 @@ const App = () => {
   const [selectedInstitution, setSelectedInstitution] = useState('all');
   const [isConnected, setIsConnected] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [accessToken, setAccessToken] = useState(null);
   const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
 
   // Replace with your OAuth Client ID from Google Cloud Console
   const GOOGLE_CLIENT_ID = '922415648629-7f6jn9v2vej7ka1knnnukvpi0i283tuk.apps.googleusercontent.com';
 
-  // Initialize Google API
+  // Initialize Google APIs
   useEffect(() => {
-    const initializeGoogleAPI = () => {
-      if (window.gapi) {
-        window.gapi.load('client:auth2', {
-          callback: async () => {
-            try {
-              await window.gapi.client.init({
-                clientId: GOOGLE_CLIENT_ID,
-                discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
-                scope: 'https://www.googleapis.com/auth/calendar.events'
-              });
-              
-              const authInstance = window.gapi.auth2.getAuthInstance();
-              
-              if (authInstance.isSignedIn.get()) {
-                setIsConnected(true);
+    const initializeGoogleAPIs = async () => {
+      try {
+        // Wait for both Google APIs to load
+        await Promise.all([
+          new Promise((resolve) => {
+            const checkGSI = () => {
+              if (window.google && window.google.accounts) {
+                resolve();
+              } else {
+                setTimeout(checkGSI, 100);
               }
-              
-              setIsGoogleLoaded(true);
-              console.log('Google API initialized successfully');
-            } catch (error) {
-              console.error('Error initializing Google API:', error);
-              setIsGoogleLoaded(false);
-            }
-          },
-          onerror: () => {
-            console.error('Error loading Google API');
-            setIsGoogleLoaded(false);
-          }
+            };
+            checkGSI();
+          }),
+          new Promise((resolve) => {
+            const checkGAPI = () => {
+              if (window.gapi) {
+                resolve();
+              } else {
+                setTimeout(checkGAPI, 100);
+              }
+            };
+            checkGAPI();
+          })
+        ]);
+
+        // Initialize gapi client
+        await new Promise((resolve) => {
+          window.gapi.load('client', resolve);
         });
-      } else {
-        // Retry if Google API not loaded yet
-        setTimeout(initializeGoogleAPI, 100);
+
+        await window.gapi.client.init({
+          discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+        });
+
+        setIsGoogleLoaded(true);
+        console.log('Google APIs initialized successfully');
+      } catch (error) {
+        console.error('Error initializing Google APIs:', error);
       }
     };
 
-    initializeGoogleAPI();
-  }, [GOOGLE_CLIENT_ID]);
+    initializeGoogleAPIs();
+  }, []);
 
   const cities = [
     'New York', 'Los Angeles', 'San Francisco', 'London', 'Washington DC', 'Boston', 'Chicago'
@@ -305,17 +313,30 @@ const App = () => {
     setSelectedEvents(newSelected);
   };
 
-  const connectCalendar = async () => {
+  const connectCalendar = () => {
     if (!isGoogleLoaded) {
       alert('Google API is still loading. Please wait a moment and try again.');
       return;
     }
 
+    if (GOOGLE_CLIENT_ID === 'YOUR_GOOGLE_CLIENT_ID_HERE') {
+      alert('Please configure your Google Client ID first.');
+      return;
+    }
+
     try {
-      const authInstance = window.gapi.auth2.getAuthInstance();
-      await authInstance.signIn();
-      setIsConnected(true);
-      alert('Successfully connected to Google Calendar!');
+      window.google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID,
+        scope: 'https://www.googleapis.com/auth/calendar.events',
+        callback: (response) => {
+          if (response.access_token) {
+            setAccessToken(response.access_token);
+            setIsConnected(true);
+            window.gapi.client.setToken({ access_token: response.access_token });
+            alert('Successfully connected to Google Calendar!');
+          }
+        },
+      }).requestAccessToken();
     } catch (error) {
       console.error('Error connecting to Google Calendar:', error);
       alert('Failed to connect to Google Calendar. Please try again.');
@@ -331,7 +352,7 @@ const App = () => {
   };
 
   const addSelectedToCalendar = async () => {
-    if (!isConnected) {
+    if (!isConnected || !accessToken) {
       alert('Please connect your Google Calendar first.');
       return;
     }
@@ -347,7 +368,6 @@ const App = () => {
         const startTime = convertTo24Hour(event.time);
         const startDateTime = `${event.date}T${startTime}:00`;
         
-        // Calculate end time (add 2 hours as default)
         const endTime = new Date(`${event.date}T${startTime}:00`);
         endTime.setHours(endTime.getHours() + 2);
         const endDateTime = endTime.toISOString().slice(0, 19);
@@ -367,7 +387,6 @@ const App = () => {
         };
       });
 
-      // Add events to Google Calendar
       let successCount = 0;
       for (const event of eventsToAdd) {
         try {
@@ -382,7 +401,7 @@ const App = () => {
       }
 
       alert(`Successfully added ${successCount} event(s) to your calendar!`);
-      setSelectedEvents(new Set()); // Clear selections
+      setSelectedEvents(new Set());
     } catch (error) {
       console.error('Error adding events to calendar:', error);
       alert('Failed to add events to calendar. Please try again.');
@@ -485,7 +504,7 @@ const App = () => {
                 }`}
               >
                 <Calendar className="inline-block w-5 h-5 mr-2" />
-                {isGoogleLoaded ? 'Connect Google Calendar' : 'Loading Google API...'}
+                {isGoogleLoaded ? 'Connect Google Calendar' : 'Loading...'}
               </button>
             ) : (
               <div className="inline-flex items-center px-4 py-2 bg-rose-50 text-rose-700 rounded-lg border border-rose-200">
