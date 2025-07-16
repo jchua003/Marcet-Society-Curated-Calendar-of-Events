@@ -9,57 +9,50 @@ const App = () => {
   const [selectedInstitution, setSelectedInstitution] = useState('all');
   const [isConnected, setIsConnected] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [googleAuth, setGoogleAuth] = useState(null);
+  const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
 
   // Replace with your OAuth Client ID from Google Cloud Console
   const GOOGLE_CLIENT_ID = '922415648629-7f6jn9v2vej7ka1knnnukvpi0i283tuk.apps.googleusercontent.com';
-  
-  // Google Calendar API configuration
-  const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
-  const SCOPES = 'https://www.googleapis.com/auth/calendar.events';
 
   // Initialize Google API
   useEffect(() => {
-    const initializeGoogleAuth = async () => {
-      try {
-        if (!window.gapi) {
-          console.log('Google API not loaded yet');
-          return;
-        }
-
-        await new Promise((resolve) => {
-           window.gapi.load('client:auth2', resolve);
-        });
-        
-        await window.gapi.client.init({
-          clientId: GOOGLE_CLIENT_ID,
-          discoveryDocs: [DISCOVERY_DOC],
-          scope: SCOPES
-        });
-
-        const authInstance = window.gapi.auth2.getAuthInstance();
-        setGoogleAuth(authInstance);
-        
-        // Check if user is already signed in
-        if (authInstance.isSignedIn.get()) {
-          setIsConnected(true);
-        }
-      } catch (error) {
-        console.error('Error initializing Google Auth:', error);
-      }
-    };
-
-    // Wait for Google API to load
-    const checkGoogleAPI = () => {
+    const initializeGoogleAPI = () => {
       if (window.gapi) {
-        initializeGoogleAuth();
+        window.gapi.load('client:auth2', {
+          callback: async () => {
+            try {
+              await window.gapi.client.init({
+                clientId: GOOGLE_CLIENT_ID,
+                discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+                scope: 'https://www.googleapis.com/auth/calendar.events'
+              });
+              
+              const authInstance = window.gapi.auth2.getAuthInstance();
+              
+              if (authInstance.isSignedIn.get()) {
+                setIsConnected(true);
+              }
+              
+              setIsGoogleLoaded(true);
+              console.log('Google API initialized successfully');
+            } catch (error) {
+              console.error('Error initializing Google API:', error);
+              setIsGoogleLoaded(false);
+            }
+          },
+          onerror: () => {
+            console.error('Error loading Google API');
+            setIsGoogleLoaded(false);
+          }
+        });
       } else {
-        setTimeout(checkGoogleAPI, 100);
+        // Retry if Google API not loaded yet
+        setTimeout(initializeGoogleAPI, 100);
       }
     };
-    
-    checkGoogleAPI();
-  }, [GOOGLE_CLIENT_ID, DISCOVERY_DOC, SCOPES]);
+
+    initializeGoogleAPI();
+  }, [GOOGLE_CLIENT_ID]);
 
   const cities = [
     'New York', 'Los Angeles', 'San Francisco', 'London', 'Washington DC', 'Boston', 'Chicago'
@@ -313,13 +306,14 @@ const App = () => {
   };
 
   const connectCalendar = async () => {
-    if (!googleAuth) {
-      alert('Google Auth is not initialized yet. Please wait a moment and try again.');
+    if (!isGoogleLoaded) {
+      alert('Google API is still loading. Please wait a moment and try again.');
       return;
     }
 
     try {
-      await googleAuth.signIn();
+      const authInstance = window.gapi.auth2.getAuthInstance();
+      await authInstance.signIn();
       setIsConnected(true);
       alert('Successfully connected to Google Calendar!');
     } catch (error) {
@@ -483,10 +477,15 @@ const App = () => {
             {!isConnected ? (
               <button
                 onClick={connectCalendar}
-                className="bg-rose-400 text-white px-6 py-3 rounded-lg font-medium hover:bg-rose-500 transition-colors duration-200 shadow-md hover:shadow-lg"
+                disabled={!isGoogleLoaded}
+                className={`px-6 py-3 rounded-lg font-medium transition-colors duration-200 shadow-md hover:shadow-lg ${
+                  isGoogleLoaded
+                    ? 'bg-rose-400 text-white hover:bg-rose-500'
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                }`}
               >
                 <Calendar className="inline-block w-5 h-5 mr-2" />
-                Connect Google Calendar
+                {isGoogleLoaded ? 'Connect Google Calendar' : 'Loading Google API...'}
               </button>
             ) : (
               <div className="inline-flex items-center px-4 py-2 bg-rose-50 text-rose-700 rounded-lg border border-rose-200">
