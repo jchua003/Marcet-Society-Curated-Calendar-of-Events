@@ -351,11 +351,88 @@ const App = () => {
     return `${hours.padStart(2, '0')}:${minutes}`;
   };
 
-  const addSelectedToCalendar = async () => {
-    if (!isConnected || !accessToken) {
-      alert('Please connect your Google Calendar first.');
-      return;
+ const addSelectedToCalendar = async () => {
+  if (!isConnected || !accessToken) {
+    alert('Please connect your Google Calendar first.');
+    return;
+  }
+
+  if (selectedEvents.size === 0) {
+    alert('Please select at least one event.');
+    return;
+  }
+
+  try {
+    const eventsToAdd = Array.from(selectedEvents).map(eventId => {
+      const event = sampleEvents.find(e => e.id === eventId);
+      const startTime = convertTo24Hour(event.time);
+      
+      // Create proper datetime strings with timezone
+      const startDateTime = new Date(`${event.date}T${startTime}:00`);
+      const endDateTime = new Date(startDateTime);
+      endDateTime.setHours(endDateTime.getHours() + 2);
+
+      return {
+        summary: event.title,
+        description: `${event.description}\n\nVenue: ${getInstitutionName(event.museum)}\nPrice: ${event.price}\nDuration: ${event.duration}`,
+        location: getInstitutionName(event.museum),
+        start: {
+          dateTime: startDateTime.toISOString(),
+          timeZone: 'America/New_York'
+        },
+        end: {
+          dateTime: endDateTime.toISOString(),
+          timeZone: 'America/New_York'
+        }
+      };
+    });
+
+    console.log('Adding events:', eventsToAdd); // Debug log
+
+    let successCount = 0;
+    const errors = [];
+
+    for (const eventData of eventsToAdd) {
+      try {
+        // Make direct API call with proper headers
+        const response = await fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(eventData)
+        });
+
+        if (response.ok) {
+          successCount++;
+          console.log('Event added successfully:', eventData.summary);
+        } else {
+          const errorData = await response.json();
+          console.error('Error adding event:', errorData);
+          errors.push(`${eventData.summary}: ${errorData.error?.message || 'Unknown error'}`);
+        }
+      } catch (error) {
+        console.error('Error adding event:', error);
+        errors.push(`${eventData.summary}: ${error.message}`);
+      }
     }
+
+    if (successCount > 0) {
+      alert(`Successfully added ${successCount} event(s) to your calendar!`);
+      setSelectedEvents(new Set()); // Clear selections
+    }
+
+    if (errors.length > 0) {
+      console.error('Errors:', errors);
+      alert(`Added ${successCount} events successfully. ${errors.length} failed.`);
+    }
+
+  } catch (error) {
+    console.error('Error adding events to calendar:', error);
+    alert('Failed to add events to calendar. Please try again.');
+  }
+};
 
     if (selectedEvents.size === 0) {
       alert('Please select at least one event.');
