@@ -3,38 +3,75 @@ import json
 import os
 from datetime import datetime
 
+def load_events_from_file():
+    """Load events handling both old and new JSON formats"""
+    try:
+        with open('cultural_events.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        print(f"🔍 File loaded successfully. Type: {type(data)}")
+        
+        # Handle both old format (array) and new format (object with events)
+        if isinstance(data, list):
+            print(f"📊 Found array format with {len(data)} events")
+            return data
+        elif isinstance(data, dict):
+            if 'events' in data:
+                events = data['events']
+                print(f"📊 Found object format with {len(events)} events")
+                return events
+            else:
+                print(f"❌ Dictionary format but no 'events' key. Keys: {list(data.keys())}")
+                return []
+        else:
+            print(f"❌ Unexpected data type: {type(data)}")
+            return []
+            
+    except Exception as e:
+        print(f"❌ Error reading events file: {e}")
+        return []
+
 def create_react_integration_script():
-    """Create the React integration script if it doesn't exist"""
+    """Create the React integration script"""
     react_integration_code = '''import json
 import re
 import os
 from datetime import datetime
 
-class ReactIntegrator:
-    def __init__(self, scraped_events_file='cultural_events.json', react_app_path='frontend/src'):
-        self.scraped_events_file = scraped_events_file
-        self.react_app_path = react_app_path
-        self.app_js_path = os.path.join(react_app_path, 'App.js')
+def load_events_from_file():
+    """Load events handling both old and new JSON formats"""
+    try:
+        with open('cultural_events.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
         
-    def load_scraped_events(self):
-        """Load scraped events from JSON file"""
-        try:
-            with open(self.scraped_events_file, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except FileNotFoundError:
-            print(f"❌ Error: {self.scraped_events_file} not found!")
+        # Handle both old format (array) and new format (object with events)
+        if isinstance(data, list):
+            return data
+        elif isinstance(data, dict) and 'events' in data:
+            return data['events']
+        else:
+            print(f"❌ Unexpected file format")
             return []
-    
-    def convert_to_react_format(self, events):
-        """Convert scraped events to React format"""
-        react_events = []
-        
-        for i, event in enumerate(events, 1):
-            # Clean up strings for JavaScript
-            title = event.get('title', '').replace("'", "\\\\'").replace('"', '\\\\"')
-            description = event.get('description', '').replace("'", "\\\\'").replace('"', '\\\\"')
             
-            react_event = f"""  {{
+    except Exception as e:
+        print(f"❌ Error reading events file: {e}")
+        return []
+
+def convert_to_react_format(events):
+    """Convert scraped events to React format"""
+    react_events = []
+    
+    for i, event in enumerate(events, 1):
+        # Ensure event is a dictionary
+        if not isinstance(event, dict):
+            print(f"⚠️ Skipping invalid event at index {i}: {type(event)}")
+            continue
+            
+        # Clean up strings for JavaScript
+        title = str(event.get('title', '')).replace("'", "\\\\'").replace('"', '\\\\"')
+        description = str(event.get('description', '')).replace("'", "\\\\'").replace('"', '\\\\"')
+        
+        react_event = f"""  {{
     id: {i},
     title: '{title}',
     museum: '{event.get('museum', 'unknown')}',
@@ -47,69 +84,72 @@ class ReactIntegrator:
     duration: '{event.get('duration', '2 hours')}',
     link: '{event.get('link', '')}'
   }}"""
-            react_events.append(react_event)
-        
-        return "[\\n" + ",\\n".join(react_events) + "\\n  ]"
+        react_events.append(react_event)
     
-    def update_app_js(self, events):
-        """Update App.js with new events"""
-        if not os.path.exists(self.app_js_path):
-            print(f"❌ Error: {self.app_js_path} not found!")
-            return False
-        
-        try:
-            # Read current App.js
-            with open(self.app_js_path, 'r', encoding='utf-8') as f:
-                content = f.read()
-            
-            # Create new events array
-            new_events_array = self.convert_to_react_format(events)
-            
-            # Find and replace the sampleEvents array
-            pattern = r'const sampleEvents = \\[.*?\\];'
-            replacement = f'const sampleEvents = {new_events_array};'
-            
-            # Use re.DOTALL to match across multiple lines
-            updated_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
-            
-            # Check if replacement was successful
-            if updated_content == content:
-                print("⚠️  Warning: Could not find sampleEvents array in App.js")
-                return False
-            
-            # Write updated content back
-            with open(self.app_js_path, 'w', encoding='utf-8') as f:
-                f.write(updated_content)
-            
-            print(f"✅ Successfully updated {self.app_js_path}")
-            return True
-            
-        except Exception as e:
-            print(f"❌ Error updating App.js: {e}")
-            return False
+    return "[\\n" + ",\\n".join(react_events) + "\\n  ]"
+
+def update_app_js(events):
+    """Update App.js with new events"""
+    app_js_path = 'frontend/src/App.js'
     
-    def integrate(self):
-        """Main integration function"""
-        print("🔄 Starting React Integration...")
+    if not os.path.exists(app_js_path):
+        print(f"❌ Error: {app_js_path} not found!")
+        return False
+    
+    try:
+        # Read current App.js
+        with open(app_js_path, 'r', encoding='utf-8') as f:
+            content = f.read()
         
-        # Load scraped events
-        events = self.load_scraped_events()
-        if not events:
+        # Create new events array
+        new_events_array = convert_to_react_format(events)
+        
+        # Find and replace the sampleEvents array
+        pattern = r'const sampleEvents = \\[.*?\\];'
+        replacement = f'const sampleEvents = {new_events_array};'
+        
+        # Use re.DOTALL to match across multiple lines
+        updated_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
+        
+        # Check if replacement was successful
+        if updated_content == content:
+            print("⚠️  Warning: Could not find sampleEvents array in App.js")
             return False
         
-        # Update App.js
-        print("⚛️  Updating App.js...")
-        if not self.update_app_js(events):
-            return False
+        # Write updated content back
+        with open(app_js_path, 'w', encoding='utf-8') as f:
+            f.write(updated_content)
         
-        print("🎉 Integration complete!")
-        print(f"✅ Integrated {len(events)} events into your React app")
-        
+        print(f"✅ Successfully updated {app_js_path}")
         return True
+        
+    except Exception as e:
+        print(f"❌ Error updating App.js: {e}")
+        return False
+
+def main():
+    """Main integration function"""
+    print("🔄 Starting React Integration...")
+    
+    # Load scraped events
+    events = load_events_from_file()
+    if not events:
+        print("❌ No events found to integrate")
+        return False
+    
+    print(f"📊 Loaded {len(events)} events")
+    
+    # Update App.js
+    print("⚛️  Updating App.js...")
+    if not update_app_js(events):
+        return False
+    
+    print("🎉 Integration complete!")
+    print(f"✅ Integrated {len(events)} events into your React app")
+    return True
 
 if __name__ == "__main__":
-    integrator = ReactIntegrator()
-    integrator.integrate()
+    main()
 '''
     
     with open('react_integration.py', 'w', encoding='utf-8') as f:
@@ -125,16 +165,10 @@ def auto_deploy_scraped_events():
     # Check if we have scraped events
     if not os.path.exists('cultural_events.json'):
         print("❌ No cultural_events.json found.")
-        print("💡 Please run the scraper first")
         return False
     
-    # Load events to count them
-    try:
-        with open('cultural_events.json', 'r', encoding='utf-8') as f:
-            events = json.load(f)
-    except Exception as e:
-        print(f"❌ Error reading events file: {e}")
-        return False
+    # Load events with proper format handling
+    events = load_events_from_file()
     
     if not events:
         print("❌ No events found in cultural_events.json")
@@ -142,15 +176,25 @@ def auto_deploy_scraped_events():
     
     print(f"📊 Found {len(events)} events to deploy")
     
-    # Count events by institution
+    # Count events by institution - with proper error handling
     institution_counts = {}
-    for event in events:
+    valid_events = 0
+    
+    for i, event in enumerate(events):
+        if not isinstance(event, dict):
+            print(f"⚠️ Warning: Event at index {i} is not a dictionary: {type(event)} - {str(event)[:100]}")
+            continue
+            
         museum = event.get('museum', 'unknown')
         institution_counts[museum] = institution_counts.get(museum, 0) + 1
+        valid_events += 1
     
-    print("\n📍 Events by institution:")
-    for museum, count in institution_counts.items():
-        print(f"   {museum}: {count} events")
+    print(f"✅ Found {valid_events} valid events")
+    
+    if institution_counts:
+        print("\n📍 Events by institution:")
+        for museum, count in sorted(institution_counts.items()):
+            print(f"   {museum}: {count} events")
     
     print("\n" + "=" * 60)
     
@@ -167,7 +211,7 @@ def auto_deploy_scraped_events():
         
         if result.returncode == 0:
             print("✅ React integration successful!")
-            if result.stdout:
+            if result.stdout.strip():
                 print(f"   Output: {result.stdout.strip()}")
         else:
             print(f"❌ React integration failed:")
@@ -207,13 +251,13 @@ def auto_deploy_scraped_events():
         commit_message = f"""🎭 Auto-update with {len(events)} scraped cultural events
 
 📅 Scraped: {timestamp}
-📊 Total Events: {len(events)}
+�� Total Events: {len(events)}
 🏛️ Institutions: {len(institution_counts)}
 
 📍 Event Breakdown:
 {chr(10).join([f'   • {museum.replace("_", " ").title()}: {count} events' for museum, count in institution_counts.items()])}
 
-🤖 Deployed via: Complete Marcet Scraper + Auto-Deploy Script
+🤖 Deployed via: Enhanced Scraper + Fixed Auto-Deploy Script
 🌐 Live Site: https://jchua003.github.io/Marcet-Society-Curated-Calendar-of-Events"""
         
         print("💾 Committing changes...")
@@ -237,7 +281,6 @@ def auto_deploy_scraped_events():
         print("   2. 🌐 Check your live site:")
         print("      https://jchua003.github.io/Marcet-Society-Curated-Calendar-of-Events")
         print("   3. ✅ Verify the new events are showing")
-        print("\n💡 Tip: Check the Actions tab in your GitHub repo to monitor deployment")
         
         return True
         

@@ -3,35 +3,52 @@ import re
 import os
 from datetime import datetime
 
-class ReactIntegrator:
-    def __init__(self, scraped_events_file='cultural_events.json', react_app_path='frontend/src'):
-        self.scraped_events_file = scraped_events_file
-        self.react_app_path = react_app_path
-        self.app_js_path = os.path.join(react_app_path, 'App.js')
-        
-    def load_scraped_events(self):
-        """Load scraped events from JSON file"""
-        try:
-            with open(self.scraped_events_file, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except FileNotFoundError:
-            print(f"❌ Error: {self.scraped_events_file} not found!")
-            return []
+def main():
+    print("🔄 Starting React Integration...")
     
-    def convert_to_react_format(self, events):
-        """Convert scraped events to React format"""
-        react_events = []
+    # Step 1: Load events from JSON file
+    try:
+        with open('cultural_events.json', 'r', encoding='utf-8') as f:
+            data = json.load(f)
         
-        for i, event in enumerate(events, 1):
-            # Clean up strings for JavaScript
-            title = event['title'].replace("'", "\\'").replace('"', '\\"')
-            description = event['description'].replace("'", "\\'").replace('"', '\\"')
+        # Handle both formats
+        if isinstance(data, list):
+            events = data
+        elif isinstance(data, dict) and 'events' in data:
+            events = data['events']
+        else:
+            print("❌ Could not find events in the JSON file")
+            return False
             
-            react_event = f"""  {{
+        print(f"✅ Loaded {len(events)} events from JSON file")
+        
+    except Exception as e:
+        print(f"❌ Error loading events: {e}")
+        return False
+    
+    # Step 2: Check App.js exists
+    app_js_path = 'frontend/src/App.js'
+    if not os.path.exists(app_js_path):
+        print(f"❌ Could not find {app_js_path}")
+        return False
+    
+    # Step 3: Convert events to React format
+    print("⚛️  Converting events to React format...")
+    react_events = []
+    
+    for i, event in enumerate(events, 1):
+        if not isinstance(event, dict):
+            continue
+            
+        # Escape quotes for JavaScript
+        title = str(event.get('title', '')).replace("'", "\\'").replace('"', '\\"')
+        description = str(event.get('description', '')).replace("'", "\\'").replace('"', '\\"')
+        
+        react_event = f"""  {{
     id: {i},
     title: '{title}',
     museum: '{event.get('museum', 'unknown')}',
-    date: '{event.get('date', datetime.now().strftime('%Y-%m-%d'))}',
+    date: '{event.get('date', '2025-07-25')}',
     time: '{event.get('time', '7:00 PM')}',
     type: '{event.get('type', 'talks')}',
     description: '{description}',
@@ -40,133 +57,72 @@ class ReactIntegrator:
     duration: '{event.get('duration', '2 hours')}',
     link: '{event.get('link', '')}'
   }}"""
-            react_events.append(react_event)
-        
-        return "[\n" + ",\n".join(react_events) + "\n  ]"
+        react_events.append(react_event)
     
-    def update_app_js(self, events):
-        """Update App.js with new events"""
-        if not os.path.exists(self.app_js_path):
-            print(f"❌ Error: {self.app_js_path} not found!")
-            return False
-        
-        try:
-            # Read current App.js
-            with open(self.app_js_path, 'r', encoding='utf-8') as f:
-                content = f.read()
-            
-            # Create new events array
-            new_events_array = self.convert_to_react_format(events)
-            
-            # Find and replace the sampleEvents array
-            pattern = r'const sampleEvents = \[.*?\];'
-            replacement = f'const sampleEvents = {new_events_array};'
-            
-            # Use re.DOTALL to match across multiple lines
-            updated_content = re.sub(pattern, replacement, content, flags=re.DOTALL)
-            
-            # Check if replacement was successful
-            if updated_content == content:
-                print("⚠️  Warning: Could not find sampleEvents array in App.js")
-                return False
-            
-            # Update the Learn More button to use the link
-            learn_more_pattern = r'<button className="text-stone-500 hover:text-stone-700 text-sm flex items-center">\s*Learn More <ExternalLink className="w-3 h-3 ml-1" />\s*</button>'
-            learn_more_replacement = '''<button 
-                        onClick={() => window.open(event.link, '_blank')}
-                        className="text-stone-500 hover:text-stone-700 text-sm flex items-center"
-                      >
-                        Learn More <ExternalLink className="w-3 h-3 ml-1" />
-                      </button>'''
-            
-            updated_content = re.sub(learn_more_pattern, learn_more_replacement, updated_content)
-            
-            # Write updated content back
-            with open(self.app_js_path, 'w', encoding='utf-8') as f:
-                f.write(updated_content)
-            
-            print(f"✅ Successfully updated {self.app_js_path}")
-            return True
-            
-        except Exception as e:
-            print(f"❌ Error updating App.js: {e}")
-            return False
+    new_events_array = "[\n" + ",\n".join(react_events) + "\n  ]"
     
-    def create_backup(self):
-        """Create backup of current App.js"""
-        if os.path.exists(self.app_js_path):
-            backup_path = f"{self.app_js_path}.backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    # Step 4: Update App.js with better pattern matching for multi-line arrays
+    print("📝 Updating App.js...")
+    try:
+        with open(app_js_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # More flexible pattern that handles multi-line arrays
+        # This pattern matches: const sampleEvents = [ ... ]; across multiple lines
+        pattern = r'const sampleEvents\s*=\s*\[[\s\S]*?\];'
+        
+        print(f"   Using pattern: {pattern}")
+        
+        # Test if pattern matches
+        match = re.search(pattern, content)
+        if match:
+            print(f"   ✅ Pattern matched! Found array with {len(match.group())} characters")
+            # Replace the matched section
+            updated_content = re.sub(pattern, f'const sampleEvents = {new_events_array};', content)
+        else:
+            print("   ❌ Pattern didn't match. Let's try a different approach...")
             
-            try:
-                with open(self.app_js_path, 'r', encoding='utf-8') as f:
-                    content = f.read()
-                
-                with open(backup_path, 'w', encoding='utf-8') as f:
-                    f.write(content)
-                
-                print(f"✅ Backup created: {backup_path}")
-                return True
-                
-            except Exception as e:
-                print(f"❌ Error creating backup: {e}")
+            # Alternative: Find the line with const sampleEvents and replace everything until the matching ];
+            lines = content.split('\n')
+            start_idx = None
+            end_idx = None
+            bracket_count = 0
+            
+            for i, line in enumerate(lines):
+                if 'const sampleEvents' in line and '=' in line and '[' in line:
+                    start_idx = i
+                    bracket_count = line.count('[') - line.count(']')
+                    print(f"   Found start at line {i+1}: {line.strip()}")
+                elif start_idx is not None:
+                    bracket_count += line.count('[') - line.count(']')
+                    if bracket_count <= 0 and ('];' in line or ']' in line):
+                        end_idx = i
+                        print(f"   Found end at line {i+1}: {line.strip()}")
+                        break
+            
+            if start_idx is not None and end_idx is not None:
+                # Replace the lines
+                new_lines = lines[:start_idx] + [f'const sampleEvents = {new_events_array};'] + lines[end_idx+1:]
+                updated_content = '\n'.join(new_lines)
+                print(f"   ✅ Replaced lines {start_idx+1} to {end_idx+1}")
+            else:
+                print("   ❌ Could not find sampleEvents array boundaries")
                 return False
         
-        return False
-    
-    def integrate(self):
-        """Main integration function"""
-        print("🔄 Starting React Integration...")
-        print("=" * 50)
+        # Write the updated content
+        with open(app_js_path, 'w', encoding='utf-8') as f:
+            f.write(updated_content)
         
-        # Load scraped events
-        events = self.load_scraped_events()
-        if not events:
-            return False
-        
-        # Create backup
-        print("📁 Creating backup...")
-        self.create_backup()
-        
-        # Update App.js
-        print("⚛️  Updating App.js...")
-        if not self.update_app_js(events):
-            return False
-        
-        print("=" * 50)
-        print("🎉 Integration complete!")
-        print(f"✅ Integrated {len(events)} events into your React app")
-        print("\n📋 Next steps:")
-        print("1. Test your React app locally")
-        print("2. Commit and push changes to GitHub")
-        print("3. Your live site will auto-update!")
-        
+        print(f"✅ Successfully updated App.js with {len(events)} events")
         return True
-    
-    def print_events_summary(self):
-        """Print summary of events to be integrated"""
-        events = self.load_scraped_events()
-        if not events:
-            return
         
-        print("\n📊 INTEGRATION SUMMARY")
-        print("=" * 50)
-        
-        for event in events:
-            print(f"📅 {event['title']}")
-            print(f"   🏛️  {event['museum']} | 📍 {event['city']}")
-            print(f"   �� {event['date']} at {event['time']}")
-            print(f"   🎭 {event['type']} | 💰 {event['price']}")
-            print(f"   🔗 {event['link']}")
-            print()
-        
-        print(f"✅ Ready to integrate {len(events)} events!")
+    except Exception as e:
+        print(f"❌ Error updating App.js: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
 
 if __name__ == "__main__":
-    integrator = ReactIntegrator()
-    
-    # Show what will be integrated
-    integrator.print_events_summary()
-    
-    # Run integration
-    integrator.integrate()
-
+    success = main()
+    if not success:
+        exit(1)
