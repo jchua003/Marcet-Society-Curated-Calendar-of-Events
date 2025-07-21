@@ -1316,5 +1316,6 @@ const sampleEvents = [
       </footer>
     </div>
   );
+};
 
 export default App;
