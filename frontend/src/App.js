@@ -2,7 +2,105 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, MapPin, Clock, Users, BookOpen, Palette, Music, Search, Plus, ExternalLink } from 'lucide-react';
 import './App.css';
 
-const sampleEvents = [
+const App = () => {
+  const [selectedCity, setSelectedCity] = useState('New York');
+  const [selectedEvents, setSelectedEvents] = useState(new Set());
+  const [filterType, setFilterType] = useState('all');
+  const [selectedInstitution, setSelectedInstitution] = useState('all');
+  const [isConnected, setIsConnected] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [accessToken, setAccessToken] = useState(null);
+  const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
+
+  const GOOGLE_CLIENT_ID = '922415648629-7f6jn9v2vej7ka1knnnukvpi0i283tuk.apps.googleusercontent.com';
+
+  useEffect(() => {
+    const initializeGoogleAPIs = async () => {
+      try {
+        await Promise.all([
+          new Promise((resolve) => {
+            const checkGSI = () => {
+              if (window.google && window.google.accounts) {
+                resolve();
+              } else {
+                setTimeout(checkGSI, 100);
+              }
+            };
+            checkGSI();
+          }),
+          new Promise((resolve) => {
+            const checkGAPI = () => {
+              if (window.gapi) {
+                resolve();
+              } else {
+                setTimeout(checkGAPI, 100);
+              }
+            };
+            checkGAPI();
+          })
+        ]);
+
+        await new Promise((resolve) => {
+          window.gapi.load('client', resolve);
+        });
+
+        await window.gapi.client.init({
+          discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+        });
+
+        setIsGoogleLoaded(true);
+        console.log('Google APIs initialized successfully');
+      } catch (error) {
+        console.error('Error initializing Google APIs:', error);
+      }
+    };
+
+    initializeGoogleAPIs();
+  }, []);
+
+  const cities = [
+    'New York', 'Los Angeles', 'San Francisco', 'London', 'Washington DC', 'Boston', 'Chicago'
+  ];
+
+  const eventTypes = [
+    { id: 'all', label: 'All Events', icon: Calendar },
+    { id: 'exhibitions', label: 'Exhibitions', icon: Palette },
+    { id: 'special', label: 'Special Event', icon: Users },
+    { id: 'lecture', label: 'Lecture', icon: BookOpen },
+    { id: 'tour', label: 'Tour', icon: MapPin },
+    { id: 'performances', label: 'Performances', icon: Music },
+    { id: 'panel', label: 'Panel Discussion', icon: Users },
+    { id: 'talks', label: 'Talks', icon: BookOpen }
+  ];
+
+  const institutionsByCity = {
+    'New York': [
+      { id: 'met', name: 'Metropolitan Museum of Art', shortName: 'The Met' },
+      { id: 'moma', name: 'Museum of Modern Art', shortName: 'MoMA' },
+      { id: 'womens', name: "Women's History Museum", shortName: "Women's History" },
+      { id: 'asia', name: 'Asia Society', shortName: 'Asia Society' },
+      { id: 'frick', name: 'Frick Collection', shortName: 'Frick' },
+      { id: 'ifa', name: 'Institute of Fine Arts NYU', shortName: 'IFA NYU' },
+      { id: 'nyhs', name: 'New York Historical Society', shortName: 'NY Historical' },
+      { id: 'morningside', name: 'Morningside Institute', shortName: 'Morningside' },
+      { id: 'nysl', name: 'New York Society Library', shortName: 'NY Society Library' },
+      { id: 'albertine', name: 'Albertine Books', shortName: 'Albertine' },
+      { id: 'rizzoli', name: 'Rizzoli Bookstore', shortName: 'Rizzoli' },
+      { id: 'grolier', name: 'Grolier Club', shortName: 'Grolier Club' },
+      { id: 'nac', name: 'National Arts Club', shortName: 'National Arts Club' },
+      { id: 'explorers', name: "Explorer's Club", shortName: "Explorer's Club" },
+      { id: 'americas', name: 'Art at America Society', shortName: 'Americas Society' },
+      { id: 'poetry', name: 'New York Poetry Society', shortName: 'Poetry Society' },
+      { id: 'alliance', name: "L'Alliance", shortName: "L'Alliance" }
+    ],
+    'Los Angeles': [
+      { id: 'lacma', name: 'Los Angeles County Museum of Art', shortName: 'LACMA' },
+      { id: 'getty', name: 'Getty Center', shortName: 'Getty' },
+      { id: 'broad', name: 'The Broad', shortName: 'The Broad' }
+    ]
+  };
+
+  const sampleEvents = [
   {
     id: 1,
     title: 'Cultural Event at Albertine',
@@ -1316,5 +1414,6 @@ const sampleEvents = [
       </footer>
     </div>
   );
+};
 
 export default App;
