@@ -44,13 +44,11 @@ def main():
         title = (
             str(event.get('title', ''))
             .replace("'", "\\'")
-            .replace('"', '\\"')
             .replace("\n", "\\\\n")
         )
         description = (
             str(event.get('description', ''))
             .replace("'", "\\'")
-            .replace('"', '\\"')
             .replace("\n", "\\\\n")
         )
         
