@@ -3,12 +3,26 @@ import re
 import os
 from datetime import datetime
 
+EVENT_FILES = ["cultural_events.json", "csv_based_events.json"]
+
+def detect_events_file():
+    """Return the first existing events file or None."""
+    for fname in EVENT_FILES:
+        if os.path.exists(fname):
+            return fname
+    return None
+
 def main():
     print("🔄 Starting React Integration...")
     
-    # Step 1: Load events from JSON file
+    # Step 1: Determine which JSON file to use
+    events_file = detect_events_file()
+    if not events_file:
+        print("❌ No events JSON file found")
+        return False
+
     try:
-        with open('cultural_events.json', 'r', encoding='utf-8') as f:
+        with open(events_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
         # Handle both formats
@@ -20,7 +34,7 @@ def main():
             print("❌ Could not find events in the JSON file")
             return False
             
-        print(f"✅ Loaded {len(events)} events from JSON file")
+        print(f"✅ Loaded {len(events)} events from {events_file}")
         
     except Exception as e:
         print(f"❌ Error loading events: {e}")
