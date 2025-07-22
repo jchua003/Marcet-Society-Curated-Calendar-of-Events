@@ -41,18 +41,8 @@ def main():
             continue
             
         # Escape quotes for JavaScript
-        title = (
-            str(event.get('title', ''))
-            .replace("'", "\\'")
-            .replace('"', '\\"')
-            .replace("\n", "\\\\n")
-        )
-        description = (
-            str(event.get('description', ''))
-            .replace("'", "\\'")
-            .replace('"', '\\"')
-            .replace("\n", "\\\\n")
-        )
+        title = str(event.get('title', '')).replace("'", "\\'").replace('"', '\\"')
+        description = str(event.get('description', '')).replace("'", "\\'").replace('"', '\\"')
         
         react_event = f"""  {{
     id: {i},
