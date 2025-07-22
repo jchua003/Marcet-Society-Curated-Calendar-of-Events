@@ -12,3 +12,7 @@ pip install -r requirements.txt
 The `requirements.txt` file currently lists `selenium` and
 `webdriver-manager` which are required for running the Selenium based
 scripts under `old_unused_files/`.
+
+When deploying events, the integration scripts look for
+`cultural_events.json` first and fall back to `csv_based_events.json`
+if present.
