@@ -14,12 +14,24 @@ import {
 import './App.css';
 
 // TODO: Replace with your own Google API credentials
-const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || 'YOUR_CLIENT_ID';
+const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || '922415648629-7f6jn9v2vej7ka1knnnukvpi0i283tuk.apps.googleusercontent.com';
 const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY || 'YOUR_API_KEY';
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'
 ];
 const SCOPES = 'https://www.googleapis.com/auth/calendar.events';
+
+const loadGapi = () =>
+  new Promise((resolve, reject) => {
+    if (window.gapi) {
+      return resolve(window.gapi);
+    }
+    const script = document.createElement('script');
+    script.src = 'https://apis.google.com/js/api.js';
+    script.onload = () => resolve(window.gapi);
+    script.onerror = () => reject(new Error('Failed to load gapi'));
+    document.body.appendChild(script);
+  });
 
 const institutionCategories = {
   "Art Museums": {
@@ -159,20 +171,20 @@ const App = () => {
   };
 
   const connectCalendar = () => {
-    const initClient = () => {
-      gapi.client
-        .init({
-          apiKey: API_KEY,
-          clientId: CLIENT_ID,
-          discoveryDocs: DISCOVERY_DOCS,
-          scope: SCOPES
-        })
-        .then(() => {
-          return gapi.auth2.getAuthInstance().signIn();
-        })
-        .then(() => setIsConnected(true));
-    };
-    gapi.load('client:auth2', initClient);
+    loadGapi().then((gapi) => {
+      const initClient = () => {
+        gapi.client
+          .init({
+            apiKey: API_KEY,
+            clientId: CLIENT_ID,
+            discoveryDocs: DISCOVERY_DOCS,
+            scope: SCOPES
+          })
+          .then(() => gapi.auth2.getAuthInstance().signIn())
+          .then(() => setIsConnected(true));
+      };
+      gapi.load('client:auth2', initClient);
+    });
   };
 
   const addEventsToCalendar = () => {
