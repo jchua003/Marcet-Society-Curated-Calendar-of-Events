@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { gapi } from 'gapi-script';
 import {
   Calendar,
   MapPin,
@@ -13,7 +14,7 @@ import {
 import './App.css';
 
 // TODO: Replace with your own Google API credentials
-const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || 'YOUR_CLIENT_ID';
+const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || '922415648629-7f6jn9v2vej7ka1knnnukvpi0i283tuk.apps.googleusercontent.com';
 const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY || 'YOUR_API_KEY';
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'
