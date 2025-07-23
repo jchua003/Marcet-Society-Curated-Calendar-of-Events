@@ -333,7 +333,6 @@ const App = () => {
           </div>
 
           <div className="text-center mt-4">
-
             {!isConnected ? (
               <button
                 onClick={connectCalendar}
@@ -352,6 +351,18 @@ const App = () => {
                 <Calendar className="w-4 h-4 mr-2" />Connected
               </div>
             )}
+
+            <div className="flex justify-center mt-4">
+              <iframe
+                title="Google Calendar"
+                src="https://calendar.google.com/calendar/embed?src=your_calendar_embed_url"
+                style={{ border: 0 }}
+                width="800"
+                height="600"
+                frameBorder="0"
+                scrolling="no"
+              ></iframe>
+            </div>
           </div>
         </div>
       </header>
@@ -370,6 +381,33 @@ const App = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400"
                 />
+              </div>
+            </div>
+
+            {/* Categorized Institution Dropdowns */}
+            <div>
+              <h3 className="text-lg font-semibold text-stone-700 mb-2">Filter by Institution:</h3>
+              <div className="space-y-3">
+                {Object.entries(institutionCategories).map(([categoryName, categoryData]) => (
+                  <select
+                    key={categoryName}
+                    value={selectedInstitutions[categoryName] || "all"}
+                    onChange={(e) => {
+                      setSelectedInstitutions((prev) => ({
+                        ...prev,
+                        [categoryName]: e.target.value,
+                      }));
+                    }}
+                    className="w-full px-4 py-2 text-sm border border-stone-300 rounded-full shadow-sm transition-colors bg-white text-stone-700 hover:bg-stone-50"
+                  >
+                    <option value="all">{categoryData.icon} All {categoryName}</option>
+                    {categoryData.institutions.map((inst) => (
+                      <option key={inst.id} value={inst.id}>
+                        {inst.name}
+                      </option>
+                    ))}
+                  </select>
+                ))}
               </div>
             </div>
 
@@ -393,33 +431,6 @@ const App = () => {
                     </button>
                   );
                 })}
-              </div>
-            </div>
-
-            {/* Categorized Institution Dropdowns */}
-            <div>
-              <h3 className="text-lg font-semibold text-stone-700 mb-2">Filter by Institution:</h3>
-              <div className="space-y-3">
-                {Object.entries(institutionCategories).map(([categoryName, categoryData]) => (
-                  <select
-                    key={categoryName}
-                    value={selectedInstitutions[categoryName] || "all"}
-                    onChange={(e) => {
-                      setSelectedInstitutions((prev) => ({
-                        ...prev,
-                        [categoryName]: e.target.value,
-                      }));
-                    }}
-                    className="w-full px-3 py-2 text-sm border border-stone-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 bg-white hover:bg-stone-50"
-                  >
-                    <option value="all">{categoryData.icon} All {categoryName}</option>
-                    {categoryData.institutions.map((inst) => (
-                      <option key={inst.id} value={inst.id}>
-                        {inst.name}
-                      </option>
-                    ))}
-                  </select>
-                ))}
               </div>
             </div>
 
