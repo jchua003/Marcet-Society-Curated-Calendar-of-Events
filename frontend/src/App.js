@@ -155,8 +155,9 @@ const App = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-stone-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-100">
       {/* Header */}
+
       <header className="bg-white shadow-sm border-b border-stone-200">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="text-center mb-8">
@@ -171,6 +172,7 @@ const App = () => {
                 "The cultivation of the mind is as necessary as the cultivation of the body."
               </p>
               <p className="text-stone-500 text-sm mt-2">— Jane Marcet</p>
+
             </div>
           </div>
 
@@ -182,8 +184,10 @@ const App = () => {
                 onClick={() => setSelectedCity(city)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   selectedCity === city
+                           
                     ? 'bg-stone-800 text-white shadow-md'
                     : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-300'
+                           
                 }`}
               >
                 {city}
@@ -196,7 +200,9 @@ const App = () => {
             {!isConnected ? (
               <button
                 onClick={connectCalendar}
+
                 className="bg-stone-800 text-white px-6 py-3 rounded-lg font-medium hover:bg-stone-700 transition-colors duration-200 shadow-md hover:shadow-lg"
+
               >
                 <Calendar className="inline-block w-5 h-5 mr-2" />
                 Connect Your Calendar
@@ -216,8 +222,10 @@ const App = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar Filters */}
           <div className="lg:col-span-1">
+
             <div className="bg-white rounded-lg shadow-sm p-6 border border-stone-200">
               <h3 className="text-lg font-serif text-stone-800 mb-4">Filter Events</h3>
+
 
               {/* Search */}
               <div className="mb-6">
@@ -333,8 +341,10 @@ const App = () => {
                       <div
                         className={`ml-4 p-2 rounded-full transition-colors duration-200 ${
                           selectedEvents.has(event.id)
+
                             ? 'bg-stone-800 text-white'
                             : 'bg-stone-100 text-stone-400 hover:bg-stone-200'
+
                         }`}
                       >
                         <Plus className="w-4 h-4" />
@@ -345,6 +355,7 @@ const App = () => {
 
                     <div className="mt-4 pt-4 border-t border-stone-100">
                       <span className="inline-block px-3 py-1 bg-stone-100 text-stone-700 text-xs rounded-full">
+
                         {eventTypes.find((t) => t.id === event.type)?.label}
                       </span>
                     </div>
@@ -355,9 +366,11 @@ const App = () => {
 
             {filteredEvents.length === 0 && (
               <div className="text-center py-12">
+
                 <Calendar className="w-16 h-16 text-stone-300 mx-auto mb-4" />
                 <h3 className="text-lg font-serif text-stone-600 mb-2">No events found</h3>
                 <p className="text-stone-500">
+
                   Try adjusting your filters or check back later for new events.
                 </p>
               </div>
@@ -367,11 +380,13 @@ const App = () => {
       </main>
 
       {/* Footer */}
+
       <footer className="bg-white border-t border-stone-200 mt-16">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="text-center text-stone-600">
             <p className="text-sm">Inspiring intellectual curiosity through cultural engagement</p>
             <p className="text-xs mt-2 text-stone-500">Built with dedication to lifelong learning</p>
+
           </div>
         </div>
       </footer>
