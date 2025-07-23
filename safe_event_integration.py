@@ -1,11 +1,25 @@
 import json
 import re
+import os
+
+EVENT_FILES = ["cultural_events.json", "csv_based_events.json"]
+
+def detect_events_file():
+    for fname in EVENT_FILES:
+        if os.path.exists(fname):
+            return fname
+    return None
 
 def main():
     print("🔧 SAFE Event Integration (Syntax-Error-Free)...")
     
     # Load events
-    with open('cultural_events.json') as f:
+    events_file = detect_events_file()
+    if not events_file:
+        print("❌ No events JSON file found")
+        return False
+
+    with open(events_file, 'r', encoding='utf-8') as f:
         data = json.load(f)
     events = data['events'] if isinstance(data, dict) else data
     print(f"✅ Loaded {len(events)} events")

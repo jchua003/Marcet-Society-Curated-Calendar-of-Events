@@ -3,13 +3,26 @@ import json
 import os
 from datetime import datetime
 
+EVENT_FILES = ["cultural_events.json", "csv_based_events.json"]
+
+def detect_events_file():
+    """Return the first existing events file or None."""
+    for fname in EVENT_FILES:
+        if os.path.exists(fname):
+            return fname
+    return None
+
 def load_events_from_file():
-    """Load events handling both old and new JSON formats"""
+    """Load events from whichever JSON file is available."""
+    events_file = detect_events_file()
+    if not events_file:
+        print("❌ No events file found.")
+        return []
+
     try:
-        with open('cultural_events.json', 'r', encoding='utf-8') as f:
+        with open(events_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
-        
-        print(f"🔍 File loaded successfully. Type: {type(data)}")
+        print(f"🔍 Loaded {events_file}. Type: {type(data)}")
         
         # Handle both old format (array) and new format (object with events)
         if isinstance(data, list):
@@ -33,15 +46,18 @@ def load_events_from_file():
 
 def create_react_integration_script():
     """Create the React integration script"""
-    react_integration_code = '''import json
+    events_file = detect_events_file() or "cultural_events.json"
+    react_integration_code = f'''import json
 import re
 import os
 from datetime import datetime
 
+EVENTS_FILE = "{events_file}"
+
 def load_events_from_file():
     """Load events handling both old and new JSON formats"""
     try:
-        with open('cultural_events.json', 'r', encoding='utf-8') as f:
+        with open(EVENTS_FILE, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
         # Handle both old format (array) and new format (object with events)
@@ -162,16 +178,17 @@ def auto_deploy_scraped_events():
     print("🔄 Starting automatic deployment of scraped events...")
     print("=" * 60)
     
-    # Check if we have scraped events
-    if not os.path.exists('cultural_events.json'):
-        print("❌ No cultural_events.json found.")
+    # Determine which events file to use
+    events_file = detect_events_file()
+    if not events_file:
+        print("❌ No events JSON file found.")
         return False
     
     # Load events with proper format handling
     events = load_events_from_file()
-    
+
     if not events:
-        print("❌ No events found in cultural_events.json")
+        print(f"❌ No events found in {events_file}")
         return False
     
     print(f"📊 Found {len(events)} events to deploy")
