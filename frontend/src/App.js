@@ -183,7 +183,6 @@ const App = () => {
                 key={city}
                 onClick={() => setSelectedCity(city)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                  selectedCity === city
                            
                     ? 'bg-stone-800 text-white shadow-md'
                     : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-300'
@@ -226,15 +225,16 @@ const App = () => {
             <div className="bg-white rounded-lg shadow-sm p-6 border border-stone-200">
               <h3 className="text-lg font-serif text-stone-800 mb-4">Filter Events</h3>
 
-
               {/* Search */}
               <div className="mb-6">
                 <div className="relative">
+                
                   <Search className="absolute left-3 top-3 w-4 h-4 text-stone-400" />
                   <input
                     type="text"
                     placeholder="Search events..."
                     className="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-400 focus:border-transparent"
+
                   />
                 </div>
               </div>
@@ -242,6 +242,7 @@ const App = () => {
               {/* Filter by Institution */}
               <div className="space-y-3 mb-6">
                 <h4 className="text-sm font-medium text-stone-700">Filter by Institution:</h4>
+
                 {Object.entries(institutionCategories).map(([categoryName, categoryData]) => (
                   <select
                     key={categoryName}
@@ -253,6 +254,7 @@ const App = () => {
                       }))
                     }
                     className="w-full px-4 py-2 text-sm border border-stone-300 rounded-full shadow-sm bg-white text-stone-700 hover:bg-stone-50"
+
                   >
                     <option value="all">
                       {categoryData.icon} All {categoryName}
@@ -294,6 +296,7 @@ const App = () => {
                     Selected Events ({selectedEvents.size})
                   </h4>
                   <button className="w-full bg-stone-800 text-white py-2 px-4 rounded-lg hover:bg-stone-700 transition-colors duration-200">
+
                     Add to Calendar
                   </button>
                 </div>
