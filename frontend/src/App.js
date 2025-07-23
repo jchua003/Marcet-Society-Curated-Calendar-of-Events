@@ -332,7 +332,8 @@ const App = () => {
             ))}
           </div>
 
-          <div className="flex justify-center mt-4">
+          <div className="text-center mt-4">
+
             {!isConnected ? (
               <button
                 onClick={connectCalendar}
