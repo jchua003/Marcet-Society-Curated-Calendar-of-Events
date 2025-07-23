@@ -165,8 +165,9 @@ const App = () => {
   const [events, setEvents] = useState(sampleEvents);
   const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
+  const [accessToken, setAccessToken] = useState(null);
 
-  const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID_HERE";
+  const GOOGLE_CLIENT_ID = "922415648629-7f6jn9v2vej7ka1knnnukvpi0i283tuk.apps.googleusercontent.com";
 
   // Load events and initialize Google APIs
   useEffect(() => {
@@ -243,6 +244,7 @@ const App = () => {
             if (response.access_token) {
               setAccessToken(response.access_token);
               window.gapi.client.setToken({ access_token: response.access_token });
+              setIsConnected(true);
               alert("Successfully connected to Google Calendar!");
             }
           },
