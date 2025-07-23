@@ -165,6 +165,7 @@ const App = () => {
   const [events, setEvents] = useState(sampleEvents);
   const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
+  const [, setAccessToken] = useState(null);
 
   const GOOGLE_CLIENT_ID = "922415648629-7f6jn9v2vej7ka1knnnukvpi0i283tuk.apps.googleusercontent.com";
 
