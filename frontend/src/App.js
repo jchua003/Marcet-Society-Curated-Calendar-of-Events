@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { gapi } from 'gapi-script';
 import {
   Calendar,
   MapPin,
@@ -11,6 +12,14 @@ import {
   Plus
 } from 'lucide-react';
 import './App.css';
+
+// TODO: Replace with your own Google API credentials
+const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || 'YOUR_CLIENT_ID';
+const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY || 'YOUR_API_KEY';
+const DISCOVERY_DOCS = [
+  'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'
+];
+const SCOPES = 'https://www.googleapis.com/auth/calendar.events';
 
 const institutionCategories = {
   "Art Museums": {
@@ -150,8 +159,40 @@ const App = () => {
   };
 
   const connectCalendar = () => {
-    // OAuth integration placeholder
-    setIsConnected(true);
+    const initClient = () => {
+      gapi.client
+        .init({
+          apiKey: API_KEY,
+          clientId: CLIENT_ID,
+          discoveryDocs: DISCOVERY_DOCS,
+          scope: SCOPES
+        })
+        .then(() => {
+          return gapi.auth2.getAuthInstance().signIn();
+        })
+        .then(() => setIsConnected(true));
+    };
+    gapi.load('client:auth2', initClient);
+  };
+
+  const addEventsToCalendar = () => {
+    if (!isConnected) return;
+    const selected = sampleEvents.filter((e) => selectedEvents.has(e.id));
+    selected.forEach((event) => {
+      const start = new Date(`${event.date} ${event.time}`);
+      const end = new Date(start.getTime() + 60 * 60 * 1000);
+      gapi.client.calendar.events.insert({
+        calendarId: 'primary',
+        resource: {
+          summary: event.title,
+          location: event.venue,
+          description: event.description,
+          start: { dateTime: start.toISOString() },
+          end: { dateTime: end.toISOString() }
+        }
+      });
+    });
+    setSelectedEvents(new Set());
   };
 
   return (
@@ -287,7 +328,11 @@ const App = () => {
                   <h4 className=" font-medium text-black mb-2">
                     Selected Events ({selectedEvents.size})
                   </h4>
-                  <button className="w-full bg-indigo-800 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+                  <button
+                    onClick={addEventsToCalendar}
+                    disabled={!isConnected}
+                    className="w-full bg-indigo-800 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200 disabled:opacity-50"
+                  >
                     Add to Calendar
                   </button>
                 </div>
