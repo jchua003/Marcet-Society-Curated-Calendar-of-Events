@@ -167,7 +167,8 @@ const App = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [, setAccessToken] = useState(null);
 
-  const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID_HERE";
+
+  const GOOGLE_CLIENT_ID = "922415648629-7f6jn9v2vej7ka1knnnukvpi0i283tuk.apps.googleusercontent.com";
 
   // Load events and initialize Google APIs
   useEffect(() => {
