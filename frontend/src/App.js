@@ -333,6 +333,7 @@ const App = () => {
           </div>
 
           <div className="text-center mt-4">
+
             {!isConnected ? (
               <button
                 onClick={connectCalendar}
