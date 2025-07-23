@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/Marcet-Society-Curated-Calendar-of-Events/static/css/main.11fbcaec.css",
-    "main.js": "/Marcet-Society-Curated-Calendar-of-Events/static/js/main.93176986.js",
+    "main.js": "/Marcet-Society-Curated-Calendar-of-Events/static/js/main.cf2b0b46.js",
     "index.html": "/Marcet-Society-Curated-Calendar-of-Events/index.html",
     "main.11fbcaec.css.map": "/Marcet-Society-Curated-Calendar-of-Events/static/css/main.11fbcaec.css.map",
-    "main.93176986.js.map": "/Marcet-Society-Curated-Calendar-of-Events/static/js/main.93176986.js.map"
+    "main.cf2b0b46.js.map": "/Marcet-Society-Curated-Calendar-of-Events/static/js/main.cf2b0b46.js.map"
   },
   "entrypoints": [
     "static/css/main.11fbcaec.css",
-    "static/js/main.93176986.js"
+    "static/js/main.cf2b0b46.js"
   ]
 }
