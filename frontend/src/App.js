@@ -399,23 +399,6 @@ const App = () => {
               </div>
             </div>
 
-            {/* Events List */}
-            <div className="space-y-4">
-              {filteredEvents.map((event) => (
-                <div key={event.id} className="bg-white rounded-md shadow p-4">
-                  <h3 className="font-semibold text-sm text-stone-800">
-                    {event.title}
-                  </h3>
-                  <p className="text-xs text-stone-600">
-                    {getInstitutionName(event.museum)} – {event.date} {event.time}
-                  </p>
-                </div>
-              ))}
-
-              {filteredEvents.length === 0 && (
-                <p className="text-stone-500 text-sm">No events found matching your criteria.</p>
-              )}
-            </div>
 
             <div className="text-center pt-4">
               {!isConnected ? (
@@ -437,7 +420,38 @@ const App = () => {
               )}
             </div>
           </aside>
-          <section className="lg:col-span-3"></section>
+          <section className="lg:col-span-3">
+            <div className="space-y-6">
+              {filteredEvents.map((event) => (
+                <div key={event.id} className="bg-white rounded-md shadow p-6">
+                  <div className="text-sm font-medium text-stone-500 mb-1">
+                    {event.type}
+                  </div>
+                  <h2 className="text-xl font-semibold text-stone-800 mb-1">
+                    {event.title}
+                  </h2>
+                  <p className="text-sm text-stone-600">
+                    {event.date} · {event.time} · {getInstitutionName(event.museum)}, {event.city}
+                  </p>
+                  <p className="text-sm text-stone-700 mt-2 whitespace-pre-line">
+                    {event.description}
+                  </p>
+                  <a
+                    href={event.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-blue-700 underline mt-2 inline-block"
+                  >
+                    Event Link
+                  </a>
+                </div>
+              ))}
+
+              {filteredEvents.length === 0 && (
+                <p className="text-stone-500 text-sm">No events found matching your criteria.</p>
+              )}
+            </div>
+          </section>
         </div>
       </main>
     </div>
