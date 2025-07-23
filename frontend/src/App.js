@@ -158,23 +158,23 @@ const App = () => {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-100">
       {/* Header */}
 
-      <header className="bg-white shadow-sm border-b border-stone-200">
+      <header className="bg-white shadow-sm border-b border-indigo-200">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-serif text-stone-800 mb-3">
+            <h1 className="text-4xl font-serif text-indigo-800 mb-3">
               Cultural Events Calendar
             </h1>
-            <p className="text-lg text-stone-600 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg text-indigo-600 max-w-2xl mx-auto leading-relaxed">
               Discover enriching cultural experiences across the world's great cities
             </p>
-            <div className="mt-6 p-4 bg-stone-50 rounded-lg border-l-4 border-stone-400 max-w-3xl mx-auto">
-              <p className="text-stone-700 italic font-serif">
+            <div className="mt-6 p-4 bg-indigo-50 rounded-lg border-l-4 border-indigo-400 max-w-3xl mx-auto">
+              <p className="text-indigo-700 italic font-serif">
                 "The cultivation of the mind is as necessary as the cultivation of the body."
               </p>
-              <p className="text-stone-500 text-sm mt-2">— Jane Marcet</p>
-
+              <p className="text-indigo-500 text-sm mt-2">— Jane Marcet</p>
             </div>
           </div>
+
 
           {/* City Selector */}
           <div className="flex flex-wrap justify-center gap-2 mb-6">
@@ -183,10 +183,9 @@ const App = () => {
                 key={city}
                 onClick={() => setSelectedCity(city)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                           
-                    ? 'bg-stone-800 text-white shadow-md'
-                    : 'bg-white text-stone-600 hover:bg-stone-100 border border-stone-300'
-                           
+                  selectedCity === city
+                    ? 'bg-indigo-800 text-white shadow-md'
+                    : 'bg-white text-indigo-600 hover:bg-indigo-100 border border-indigo-300'
                 }`}
               >
                 {city}
@@ -199,9 +198,7 @@ const App = () => {
             {!isConnected ? (
               <button
                 onClick={connectCalendar}
-
-                className="bg-stone-800 text-white px-6 py-3 rounded-lg font-medium hover:bg-stone-700 transition-colors duration-200 shadow-md hover:shadow-lg"
-
+                className="bg-indigo-800 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors duration-200 shadow-md hover:shadow-lg"
               >
                 <Calendar className="inline-block w-5 h-5 mr-2" />
                 Connect Your Calendar
@@ -221,28 +218,24 @@ const App = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar Filters */}
           <div className="lg:col-span-1">
-
-            <div className="bg-white rounded-lg shadow-sm p-6 border border-stone-200">
-              <h3 className="text-lg font-serif text-stone-800 mb-4">Filter Events</h3>
+            <div className="bg-white rounded-lg shadow-sm p-6 border border-indigo-200">
+              <h3 className="text-lg font-serif text-indigo-800 mb-4">Filter Events</h3>
 
               {/* Search */}
               <div className="mb-6">
                 <div className="relative">
-                
-                  <Search className="absolute left-3 top-3 w-4 h-4 text-stone-400" />
+                  <Search className="absolute left-3 top-3 w-4 h-4 text-indigo-400" />
                   <input
                     type="text"
                     placeholder="Search events..."
-                    className="w-full pl-10 pr-4 py-2 border border-stone-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-stone-400 focus:border-transparent"
-
+                    className="w-full pl-10 pr-4 py-2 border border-indigo-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
                   />
                 </div>
               </div>
 
               {/* Filter by Institution */}
               <div className="space-y-3 mb-6">
-                <h4 className="text-sm font-medium text-stone-700">Filter by Institution:</h4>
-
+                <h4 className="text-sm font-serif font-medium text-indigo-700">Filter by Institution:</h4>
                 {Object.entries(institutionCategories).map(([categoryName, categoryData]) => (
                   <select
                     key={categoryName}
@@ -253,8 +246,7 @@ const App = () => {
                         [categoryName]: e.target.value
                       }))
                     }
-                    className="w-full px-4 py-2 text-sm border border-stone-300 rounded-full shadow-sm bg-white text-stone-700 hover:bg-stone-50"
-
+                    className="w-full px-4 py-2 text-sm border border-indigo-300 rounded-full shadow-sm bg-white text-indigo-700 hover:bg-indigo-50"
                   >
                     <option value="all">
                       {categoryData.icon} All {categoryName}
@@ -278,8 +270,8 @@ const App = () => {
                       onClick={() => setFilterType(type.id)}
                       className={`w-full flex items-center px-3 py-2 rounded-lg text-sm transition-colors duration-200 ${
                         filterType === type.id
-                          ? 'bg-stone-100 text-stone-800 border border-stone-300'
-                          : 'text-stone-600 hover:bg-stone-50'
+                          ? 'bg-indigo-100 text-indigo-800 border border-indigo-300'
+                          : 'text-indigo-600 hover:bg-indigo-50'
                       }`}
                     >
                       <Icon className="w-4 h-4 mr-3" />
@@ -291,12 +283,11 @@ const App = () => {
 
               {/* Selected Events Summary */}
               {selectedEvents.size > 0 && (
-                <div className="mt-6 p-4 bg-stone-50 rounded-lg border border-stone-200">
-                  <h4 className="font-medium text-stone-800 mb-2">
+                <div className="mt-6 p-4 bg-indigo-50 rounded-lg border border-indigo-200">
+                  <h4 className="font-serif font-medium text-indigo-800 mb-2">
                     Selected Events ({selectedEvents.size})
                   </h4>
-                  <button className="w-full bg-stone-800 text-white py-2 px-4 rounded-lg hover:bg-stone-700 transition-colors duration-200">
-
+                  <button className="w-full bg-indigo-800 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
                     Add to Calendar
                   </button>
                 </div>
@@ -307,8 +298,8 @@ const App = () => {
           {/* Events List */}
           <div className="lg:col-span-3">
             <div className="mb-6">
-              <h2 className="text-2xl font-serif text-stone-800 mb-2">Events in {selectedCity}</h2>
-              <p className="text-stone-600">
+              <h2 className="text-2xl font-serif text-indigo-800 mb-2">Events in {selectedCity}</h2>
+              <p className="text-indigo-600">
                 {filteredEvents.length} event{filteredEvents.length !== 1 ? 's' : ''} found
               </p>
             </div>
@@ -319,18 +310,18 @@ const App = () => {
                   key={event.id}
                   className={`bg-white rounded-lg shadow-sm border transition-all duration-200 hover:shadow-md cursor-pointer ${
                     selectedEvents.has(event.id)
-                      ? 'border-stone-400 bg-stone-50'
-                      : 'border-stone-200 hover:border-stone-300'
+                      ? 'border-indigo-400 bg-indigo-50'
+                      : 'border-indigo-200 hover:border-indigo-300'
                   }`}
                   onClick={() => toggleEventSelection(event.id)}
                 >
                   <div className="p-6">
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex-1">
-                        <h3 className="text-xl font-serif text-stone-800 mb-2">
+                        <h3 className="text-xl font-serif text-indigo-800 mb-2">
                           {event.title}
                         </h3>
-                        <div className="flex items-center text-stone-600 text-sm space-x-4">
+                        <div className="flex items-center text-indigo-600 text-sm space-x-4">
                           <span className="flex items-center">
                             <MapPin className="w-4 h-4 mr-1" />
                             {event.venue}
@@ -344,21 +335,18 @@ const App = () => {
                       <div
                         className={`ml-4 p-2 rounded-full transition-colors duration-200 ${
                           selectedEvents.has(event.id)
-
-                            ? 'bg-stone-800 text-white'
-                            : 'bg-stone-100 text-stone-400 hover:bg-stone-200'
-
+                            ? 'bg-indigo-800 text-white'
+                            : 'bg-indigo-100 text-indigo-400 hover:bg-indigo-200'
                         }`}
                       >
                         <Plus className="w-4 h-4" />
                       </div>
                     </div>
 
-                    <p className="text-stone-600 leading-relaxed">{event.description}</p>
+                    <p className="text-indigo-600 leading-relaxed">{event.description}</p>
 
-                    <div className="mt-4 pt-4 border-t border-stone-100">
-                      <span className="inline-block px-3 py-1 bg-stone-100 text-stone-700 text-xs rounded-full">
-
+                    <div className="mt-4 pt-4 border-t border-indigo-100">
+                      <span className="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 text-xs rounded-full">
                         {eventTypes.find((t) => t.id === event.type)?.label}
                       </span>
                     </div>
@@ -369,11 +357,9 @@ const App = () => {
 
             {filteredEvents.length === 0 && (
               <div className="text-center py-12">
-
-                <Calendar className="w-16 h-16 text-stone-300 mx-auto mb-4" />
-                <h3 className="text-lg font-serif text-stone-600 mb-2">No events found</h3>
-                <p className="text-stone-500">
-
+                <Calendar className="w-16 h-16 text-indigo-300 mx-auto mb-4" />
+                <h3 className="text-lg font-serif text-indigo-600 mb-2">No events found</h3>
+                <p className="text-indigo-500">
                   Try adjusting your filters or check back later for new events.
                 </p>
               </div>
@@ -383,13 +369,11 @@ const App = () => {
       </main>
 
       {/* Footer */}
-
-      <footer className="bg-white border-t border-stone-200 mt-16">
+      <footer className="bg-white border-t border-indigo-200 mt-16">
         <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="text-center text-stone-600">
+          <div className="text-center text-indigo-600">
             <p className="text-sm">Inspiring intellectual curiosity through cultural engagement</p>
-            <p className="text-xs mt-2 text-stone-500">Built with dedication to lifelong learning</p>
-
+            <p className="text-xs mt-2 text-indigo-500">Built with dedication to lifelong learning</p>
           </div>
         </div>
       </footer>
