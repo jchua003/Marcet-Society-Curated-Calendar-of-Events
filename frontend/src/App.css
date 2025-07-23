@@ -15,16 +15,16 @@ body {
 }
 
 /* Utility classes - Rose theme */
-.bg-rose-50 { background-color: #fff1f2; }
-.bg-rose-100 { background-color: #ffe4e6; }
-.bg-rose-400 { background-color: #fb7185; }
-.bg-rose-500 { background-color: #f43f5e; }
-.text-rose-600 { color: #e11d48; }
-.text-rose-700 { color: #be123c; }
-.text-rose-800 { color: #9f1239; }
-.border-rose-200 { border-color: #fecdd3; }
-.border-rose-300 { border-color: #fda4af; }
-.border-rose-400 { border-color: #fb7185; }
+.bg-indigo-50 { background-color: #eef2ff; }
+.bg-indigo-100 { background-color: #e0e7ff; }
+.bg-indigo-400 { background-color: #818cf8; }
+.bg-indigo-500 { background-color: #6366f1; }
+.text-indigo-600 { color: #4f46e5; }
+.text-indigo-700 { color: #4338ca; }
+.text-indigo-800 { color: #3730a3; }
+.border-indigo-200 { border-color: #c7d2fe; }
+.border-indigo-300 { border-color: #a5b4fc; }
+.border-indigo-400 { border-color: #818cf8; }
 
 /* Stone colors */
 .bg-stone-50 { background-color: #fafaf9; }
@@ -159,8 +159,8 @@ body {
 .hover\:bg-stone-50:hover { background-color: #fafaf9; }
 .hover\:bg-stone-100:hover { background-color: #f5f5f4; }
 .hover\:bg-stone-200:hover { background-color: #e7e5e4; }
-.hover\:bg-rose-500:hover { background-color: #f43f5e; }
-.hover\:border-rose-300:hover { border-color: #fda4af; }
+.hover\:bg-indigo-500:hover { background-color: #6366f1; }
+.hover\:border-indigo-300:hover { border-color: #a5b4fc; }
 .hover\:border-stone-300:hover { border-color: #d6d3d1; }
 .hover\:text-stone-700:hover { color: #44403c; }
 .hover\:shadow-md:hover { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
@@ -168,8 +168,8 @@ body {
 
 /* Focus states */
 .focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
-.focus\:ring-2:focus { box-shadow: 0 0 0 2px #fda4af; }
-.focus\:border-rose-400:focus { border-color: #fb7185; }
+.focus\:ring-2:focus { box-shadow: 0 0 0 2px #a5b4fc; }
+.focus\:border-indigo-400:focus { border-color: #818cf8; }
 
 /* Background gradient */
 .bg-gradient-to-br {
