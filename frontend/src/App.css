@@ -11,7 +11,7 @@
 body {
   font-family: 'Inter', sans-serif;
   background-color: #f8fafc;
-  color: #292524;
+  color: #000000;
 }
 
 /* Utility classes - Rose theme */
@@ -33,7 +33,7 @@ body {
 .text-stone-500 { color: #78716c; }
 .text-stone-600 { color: #57534e; }
 .text-stone-700 { color: #44403c; }
-.text-stone-800 { color: #292524; }
+.text-stone-800 { color: #000000; }
 .border-stone-100 { border-color: #f5f5f4; }
 .border-stone-200 { border-color: #e7e5e4; }
 .border-stone-300 { border-color: #d6d3d1; }
@@ -43,6 +43,7 @@ body {
 .text-blue-700 { color: #1d4ed8; }
 
 /* Layout utilities */
+.bg-baby-blue { background-color: #89CFF0; }
 .min-h-screen { min-height: 100vh; }
 .max-w-7xl { max-width: 80rem; }
 .max-w-2xl { max-width: 42rem; }
@@ -100,7 +101,6 @@ body {
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .text-white { color: #ffffff; }
-.font-serif { font-family: 'Georgia', 'Times New Roman', serif; }
 
 /* Background and borders */
 .bg-white { background-color: #ffffff; }
