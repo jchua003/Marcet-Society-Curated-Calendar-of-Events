@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, MapPin, Clock, Users, BookOpen, Palette, Music, Search, ExternalLink } from 'lucide-react';
+import { Calendar, Users, BookOpen, Palette, Music, Search } from 'lucide-react';
 import './App.css';
 
 const App = () => {
@@ -165,7 +165,6 @@ const App = () => {
   const [events, setEvents] = useState(sampleEvents);
   const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
-  const [accessToken, setAccessToken] = useState(null);
 
   const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID_HERE";
 
@@ -242,7 +241,6 @@ const App = () => {
           scope: "https://www.googleapis.com/auth/calendar.events",
           callback: (response) => {
             if (response.access_token) {
-              setAccessToken(response.access_token);
               setIsConnected(true);
               window.gapi.client.setToken({ access_token: response.access_token });
               alert("Successfully connected to Google Calendar!");
