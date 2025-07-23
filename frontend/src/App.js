@@ -87,7 +87,7 @@ const App = () => {
       museum: "poetry_society",
       date: "2025-07-27",
       time: "7:30 PM",
-      type: "readings",
+      type: "performances",
       description: "Contemporary poetry with local and visiting authors.",
       city: "New York",
       price: "$15",
@@ -100,7 +100,7 @@ const App = () => {
       museum: "albertine",
       date: "2025-07-28",
       time: "6:00 PM",
-      type: "workshops",
+      type: "special_event",
       description: "Interactive workshop exploring French literary traditions.",
       city: "New York",
       price: "$25",
@@ -126,7 +126,7 @@ const App = () => {
       museum: "womens_history",
       date: "2025-07-30",
       time: "7:00 PM",
-      type: "lectures",
+      type: "lecture",
       description: "Celebrating contributions of women throughout history.",
       city: "New York",
       price: "Free",
@@ -144,10 +144,12 @@ const App = () => {
   const eventTypes = [
     { id: "all", label: "All Events", icon: Calendar },
     { id: "exhibitions", label: "Exhibitions", icon: Palette },
-    { id: "talks", label: "Talks & Lectures", icon: Users },
-    { id: "readings", label: "Readings", icon: BookOpen },
-    { id: "workshops", label: "Workshops", icon: Music },
-    { id: "lectures", label: "Lectures", icon: Users }
+    { id: "special_event", label: "Special Event", icon: Users },
+    { id: "lecture", label: "Lecture", icon: BookOpen },
+    { id: "tour", label: "Tour", icon: Calendar },
+    { id: "performances", label: "Performances", icon: Music },
+    { id: "panel_discussion", label: "Panel Discussion", icon: Users },
+    { id: "talks", label: "Talks", icon: BookOpen }
   ];
 
   // Cities for filtering
@@ -321,8 +323,8 @@ const App = () => {
                 onClick={() => setSelectedCity(city)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all border-2 ${
                   selectedCity === city
-                    ? "bg-rose-400 text-white shadow-md border-rose-400"
-                    : "bg-white text-stone-600 hover:bg-stone-50 border-rose-200 hover:border-rose-300"
+                    ? "bg-indigo-400 text-white shadow-md border-indigo-400"
+                    : "bg-white text-stone-600 hover:bg-stone-50 border-indigo-200 hover:border-indigo-300"
                 }`}
               >
                 {city}
@@ -344,7 +346,7 @@ const App = () => {
                   placeholder="Search events..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-rose-200 focus:border-rose-400"
+                  className="w-full pl-10 pr-4 py-3 border border-stone-300 rounded-lg focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400"
                 />
               </div>
             </div>
@@ -360,7 +362,7 @@ const App = () => {
                       onClick={() => setFilterType(type.id)}
                       className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${
                         filterType === type.id
-                          ? "bg-rose-500 text-white"
+                          ? "bg-indigo-500 text-white"
                           : "bg-white text-stone-700 border border-stone-300 hover:bg-stone-50"
                       }`}
                     >
@@ -386,7 +388,7 @@ const App = () => {
                         [categoryName]: e.target.value,
                       }));
                     }}
-                    className="w-full px-3 py-2 text-sm border border-stone-300 rounded-md focus:ring-2 focus:ring-rose-200 focus:border-rose-400 bg-white"
+                    className="w-full px-3 py-2 text-sm border border-stone-300 rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 bg-white"
                   >
                     <option value="all">{categoryData.icon} All {categoryName}</option>
                     {categoryData.institutions.map((inst) => (
@@ -407,20 +409,21 @@ const App = () => {
                   disabled={!isGoogleLoaded}
                   className={`px-4 py-2 rounded-md font-medium transition-colors ${
                     isGoogleLoaded
-                      ? "bg-rose-500 text-white hover:bg-rose-600"
+                      ? "bg-indigo-500 text-white hover:bg-indigo-600"
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
                   }`}
                 >
                   {isGoogleLoaded ? "Connect Google Calendar" : "Loading..."}
                 </button>
               ) : (
-                <div className="inline-flex items-center px-3 py-2 bg-rose-50 text-rose-700 rounded-md border border-rose-200">
+                <div className="inline-flex items-center px-3 py-2 bg-indigo-50 text-indigo-700 rounded-md border border-indigo-200">
                   <Calendar className="w-4 h-4 mr-2" />Connected
                 </div>
               )}
             </div>
           </aside>
           <section className="lg:col-span-3">
+            <h2 className="text-2xl font-serif text-stone-800 mb-4">Cultural Events in {selectedCity}</h2>
             <div className="space-y-6">
               {filteredEvents.map((event) => (
                 <div key={event.id} className="bg-white rounded-md shadow p-6">
@@ -436,14 +439,17 @@ const App = () => {
                   <p className="text-sm text-stone-700 mt-2 whitespace-pre-line">
                     {event.description}
                   </p>
-                  <a
-                    href={event.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-blue-700 underline mt-2 inline-block"
-                  >
-                    Event Link
-                  </a>
+                  <div className="flex items-center gap-2 mt-2">
+                    <a
+                      href={event.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-blue-700 underline"
+                    >
+                      Learn More
+                    </a>
+                    <button className="text-indigo-600 text-lg leading-none">+</button>
+                  </div>
                 </div>
               ))}
 
