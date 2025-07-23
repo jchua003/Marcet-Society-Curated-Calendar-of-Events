@@ -157,6 +157,7 @@ const App = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-100">
       {/* Header */}
+
       <header className="bg-white shadow-sm border-b border-indigo-200">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="text-center mb-8">
@@ -173,6 +174,7 @@ const App = () => {
               <p className="text-indigo-500 text-sm mt-2">— Jane Marcet</p>
             </div>
           </div>
+
 
           {/* City Selector */}
           <div className="flex flex-wrap justify-center gap-2 mb-6">
