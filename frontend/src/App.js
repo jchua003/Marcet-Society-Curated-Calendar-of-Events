@@ -331,6 +331,27 @@ const App = () => {
               </button>
             ))}
           </div>
+
+          <div className="text-center mt-4">
+            {!isConnected ? (
+              <button
+                onClick={connectCalendar}
+                disabled={!isGoogleLoaded}
+                className={`flex items-center justify-center gap-2 px-4 py-2 rounded-full font-medium shadow-sm transition-all ${
+                  isGoogleLoaded
+                    ? "bg-indigo-500 text-white hover:bg-indigo-600"
+                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                }`}
+              >
+                <Calendar className="w-4 h-4" />
+                {isGoogleLoaded ? "Connect Google Calendar" : "Loading..."}
+              </button>
+            ) : (
+              <div className="inline-flex items-center px-3 py-2 bg-indigo-50 text-indigo-700 rounded-md border border-indigo-200">
+                <Calendar className="w-4 h-4 mr-2" />Connected
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
@@ -388,7 +409,7 @@ const App = () => {
                         [categoryName]: e.target.value,
                       }));
                     }}
-                    className="w-full px-3 py-2 text-sm border border-stone-300 rounded-md focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 bg-white"
+                    className="w-full px-3 py-2 text-sm border border-stone-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 bg-white hover:bg-stone-50"
                   >
                     <option value="all">{categoryData.icon} All {categoryName}</option>
                     {categoryData.institutions.map((inst) => (
@@ -402,25 +423,6 @@ const App = () => {
             </div>
 
 
-            <div className="text-center pt-4">
-              {!isConnected ? (
-                <button
-                  onClick={connectCalendar}
-                  disabled={!isGoogleLoaded}
-                  className={`px-4 py-2 rounded-md font-medium transition-colors ${
-                    isGoogleLoaded
-                      ? "bg-indigo-500 text-white hover:bg-indigo-600"
-                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  }`}
-                >
-                  {isGoogleLoaded ? "Connect Google Calendar" : "Loading..."}
-                </button>
-              ) : (
-                <div className="inline-flex items-center px-3 py-2 bg-indigo-50 text-indigo-700 rounded-md border border-indigo-200">
-                  <Calendar className="w-4 h-4 mr-2" />Connected
-                </div>
-              )}
-            </div>
           </aside>
           <section className="lg:col-span-3">
             <h2 className="text-2xl font-serif text-stone-800 mb-4">Cultural Events in {selectedCity}</h2>
