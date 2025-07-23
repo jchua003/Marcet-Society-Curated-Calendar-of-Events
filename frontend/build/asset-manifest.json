@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/Marcet-Society-Curated-Calendar-of-Events/static/css/main.301f1d30.css",
-    "main.js": "/Marcet-Society-Curated-Calendar-of-Events/static/js/main.8c407e60.js",
+    "main.css": "/Marcet-Society-Curated-Calendar-of-Events/static/css/main.11fbcaec.css",
+    "main.js": "/Marcet-Society-Curated-Calendar-of-Events/static/js/main.34e872a1.js",
     "index.html": "/Marcet-Society-Curated-Calendar-of-Events/index.html",
-    "main.301f1d30.css.map": "/Marcet-Society-Curated-Calendar-of-Events/static/css/main.301f1d30.css.map",
-    "main.8c407e60.js.map": "/Marcet-Society-Curated-Calendar-of-Events/static/js/main.8c407e60.js.map"
+    "main.11fbcaec.css.map": "/Marcet-Society-Curated-Calendar-of-Events/static/css/main.11fbcaec.css.map",
+    "main.34e872a1.js.map": "/Marcet-Society-Curated-Calendar-of-Events/static/js/main.34e872a1.js.map"
   },
   "entrypoints": [
-    "static/css/main.301f1d30.css",
-    "static/js/main.8c407e60.js"
+    "static/css/main.11fbcaec.css",
+    "static/js/main.34e872a1.js"
   ]
 }
