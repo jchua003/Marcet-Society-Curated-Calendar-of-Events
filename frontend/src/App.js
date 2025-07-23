@@ -12,6 +12,26 @@ import {
 } from 'lucide-react';
 import './App.css';
 
+// TODO: Replace with your own Google API credentials
+const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID || 'YOUR_CLIENT_ID';
+const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY || 'YOUR_API_KEY';
+const DISCOVERY_DOCS = [
+  'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'
+];
+const SCOPES = 'https://www.googleapis.com/auth/calendar.events';
+
+const loadGapi = () =>
+  new Promise((resolve, reject) => {
+    if (window.gapi) {
+      return resolve(window.gapi);
+    }
+    const script = document.createElement('script');
+    script.src = 'https://apis.google.com/js/api.js';
+    script.onload = () => resolve(window.gapi);
+    script.onerror = () => reject(new Error('Failed to load gapi'));
+    document.body.appendChild(script);
+  });
+
 const institutionCategories = {
   "Art Museums": {
     icon: "🖼️",
@@ -150,8 +170,40 @@ const App = () => {
   };
 
   const connectCalendar = () => {
-    // OAuth integration placeholder
-    setIsConnected(true);
+    loadGapi().then((gapi) => {
+      const initClient = () => {
+        gapi.client
+          .init({
+            apiKey: API_KEY,
+            clientId: CLIENT_ID,
+            discoveryDocs: DISCOVERY_DOCS,
+            scope: SCOPES
+          })
+          .then(() => gapi.auth2.getAuthInstance().signIn())
+          .then(() => setIsConnected(true));
+      };
+      gapi.load('client:auth2', initClient);
+    });
+  };
+
+  const addEventsToCalendar = () => {
+    if (!isConnected) return;
+    const selected = sampleEvents.filter((e) => selectedEvents.has(e.id));
+    selected.forEach((event) => {
+      const start = new Date(`${event.date} ${event.time}`);
+      const end = new Date(start.getTime() + 60 * 60 * 1000);
+      gapi.client.calendar.events.insert({
+        calendarId: 'primary',
+        resource: {
+          summary: event.title,
+          location: event.venue,
+          description: event.description,
+          start: { dateTime: start.toISOString() },
+          end: { dateTime: end.toISOString() }
+        }
+      });
+    });
+    setSelectedEvents(new Set());
   };
 
   return (
@@ -161,17 +213,17 @@ const App = () => {
       <header className="bg-white shadow-sm border-b border-indigo-200">
         <div className="max-w-7xl mx-auto px-6 py-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-serif text-indigo-800 mb-3">
+            <h1 className="text-4xl  text-black mb-3">
               Cultural Events Calendar
             </h1>
-            <p className="text-lg text-indigo-600 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg text-black max-w-2xl mx-auto leading-relaxed">
               Discover enriching cultural experiences across the world's great cities
             </p>
             <div className="mt-6 p-4 bg-indigo-50 rounded-lg border-l-4 border-indigo-400 max-w-3xl mx-auto">
-              <p className="text-indigo-700 italic font-serif">
+              <p className="text-black italic ">
                 "The cultivation of the mind is as necessary as the cultivation of the body."
               </p>
-              <p className="text-indigo-500 text-sm mt-2">— Jane Marcet</p>
+              <p className="text-black text-sm mt-2">— Jane Marcet</p>
             </div>
           </div>
 
@@ -185,7 +237,7 @@ const App = () => {
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   selectedCity === city
                     ? 'bg-indigo-800 text-white shadow-md'
-                    : 'bg-white text-indigo-600 hover:bg-indigo-100 border border-indigo-300'
+                    : 'bg-white text-black hover:bg-indigo-100 border border-indigo-300'
                 }`}
               >
                 {city}
@@ -204,7 +256,7 @@ const App = () => {
                 Connect Your Calendar
               </button>
             ) : (
-              <div className="inline-flex items-center px-4 py-2 bg-green-50 text-green-700 rounded-lg border border-green-200">
+              <div className="inline-flex items-center px-4 py-2 bg-green-50 text-black rounded-lg border border-green-200">
                 <Calendar className="w-5 h-5 mr-2" />
                 Calendar Connected
               </div>
@@ -219,12 +271,12 @@ const App = () => {
           {/* Sidebar Filters */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow-sm p-6 border border-indigo-200">
-              <h3 className="text-lg font-serif text-indigo-800 mb-4">Filter Events</h3>
+              <h3 className="text-lg  text-black mb-4">Filter Events</h3>
 
               {/* Search */}
               <div className="mb-6">
                 <div className="relative">
-                  <Search className="absolute left-3 top-3 w-4 h-4 text-indigo-400" />
+                  <Search className="absolute left-3 top-3 w-4 h-4 text-black" />
                   <input
                     type="text"
                     placeholder="Search events..."
@@ -234,8 +286,8 @@ const App = () => {
               </div>
 
               {/* Filter by Institution */}
-              <div className="space-y-3 mb-6">
-                <h4 className="text-sm font-serif font-medium text-indigo-700">Filter by Institution:</h4>
+              <div className="space-y-4 mb-6">
+                <h4 className="text-lg  font-medium text-black">Filter by Institution:</h4>
                 {Object.entries(institutionCategories).map(([categoryName, categoryData]) => (
                   <select
                     key={categoryName}
@@ -246,7 +298,7 @@ const App = () => {
                         [categoryName]: e.target.value
                       }))
                     }
-                    className="w-full px-4 py-2 text-sm border border-indigo-300 rounded-full shadow-sm bg-white text-indigo-700 hover:bg-indigo-50"
+                    className="w-full px-4 py-2 text-sm border border-indigo-300 rounded-full shadow-sm bg-baby-blue text-black"
                   >
                     <option value="all">
                       {categoryData.icon} All {categoryName}
@@ -270,8 +322,8 @@ const App = () => {
                       onClick={() => setFilterType(type.id)}
                       className={`w-full flex items-center px-3 py-2 rounded-lg text-sm transition-colors duration-200 ${
                         filterType === type.id
-                          ? 'bg-indigo-100 text-indigo-800 border border-indigo-300'
-                          : 'text-indigo-600 hover:bg-indigo-50'
+                          ? 'bg-indigo-100 text-black border border-indigo-300'
+                          : 'text-black hover:bg-indigo-50'
                       }`}
                     >
                       <Icon className="w-4 h-4 mr-3" />
@@ -284,10 +336,14 @@ const App = () => {
               {/* Selected Events Summary */}
               {selectedEvents.size > 0 && (
                 <div className="mt-6 p-4 bg-indigo-50 rounded-lg border border-indigo-200">
-                  <h4 className="font-serif font-medium text-indigo-800 mb-2">
+                  <h4 className=" font-medium text-black mb-2">
                     Selected Events ({selectedEvents.size})
                   </h4>
-                  <button className="w-full bg-indigo-800 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200">
+                  <button
+                    onClick={addEventsToCalendar}
+                    disabled={!isConnected}
+                    className="w-full bg-indigo-800 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors duration-200 disabled:opacity-50"
+                  >
                     Add to Calendar
                   </button>
                 </div>
@@ -298,8 +354,8 @@ const App = () => {
           {/* Events List */}
           <div className="lg:col-span-3">
             <div className="mb-6">
-              <h2 className="text-2xl font-serif text-indigo-800 mb-2">Events in {selectedCity}</h2>
-              <p className="text-indigo-600">
+              <h2 className="text-2xl  text-black mb-2">Events in {selectedCity}</h2>
+              <p className="text-black">
                 {filteredEvents.length} event{filteredEvents.length !== 1 ? 's' : ''} found
               </p>
             </div>
@@ -318,10 +374,10 @@ const App = () => {
                   <div className="p-6">
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex-1">
-                        <h3 className="text-xl font-serif text-indigo-800 mb-2">
+                        <h3 className="text-xl  text-black mb-2">
                           {event.title}
                         </h3>
-                        <div className="flex items-center text-indigo-600 text-sm space-x-4">
+                        <div className="flex items-center text-black text-sm space-x-4">
                           <span className="flex items-center">
                             <MapPin className="w-4 h-4 mr-1" />
                             {event.venue}
@@ -336,17 +392,17 @@ const App = () => {
                         className={`ml-4 p-2 rounded-full transition-colors duration-200 ${
                           selectedEvents.has(event.id)
                             ? 'bg-indigo-800 text-white'
-                            : 'bg-indigo-100 text-indigo-400 hover:bg-indigo-200'
+                            : 'bg-indigo-100 text-black hover:bg-indigo-200'
                         }`}
                       >
                         <Plus className="w-4 h-4" />
                       </div>
                     </div>
 
-                    <p className="text-indigo-600 leading-relaxed">{event.description}</p>
+                    <p className="text-black leading-relaxed">{event.description}</p>
 
                     <div className="mt-4 pt-4 border-t border-indigo-100">
-                      <span className="inline-block px-3 py-1 bg-indigo-100 text-indigo-700 text-xs rounded-full">
+                      <span className="inline-block px-3 py-1 bg-indigo-100 text-black text-xs rounded-full">
                         {eventTypes.find((t) => t.id === event.type)?.label}
                       </span>
                     </div>
@@ -357,9 +413,9 @@ const App = () => {
 
             {filteredEvents.length === 0 && (
               <div className="text-center py-12">
-                <Calendar className="w-16 h-16 text-indigo-300 mx-auto mb-4" />
-                <h3 className="text-lg font-serif text-indigo-600 mb-2">No events found</h3>
-                <p className="text-indigo-500">
+                <Calendar className="w-16 h-16 text-black mx-auto mb-4" />
+                <h3 className="text-lg  text-black mb-2">No events found</h3>
+                <p className="text-black">
                   Try adjusting your filters or check back later for new events.
                 </p>
               </div>
@@ -371,9 +427,9 @@ const App = () => {
       {/* Footer */}
       <footer className="bg-white border-t border-indigo-200 mt-16">
         <div className="max-w-7xl mx-auto px-6 py-8">
-          <div className="text-center text-indigo-600">
+          <div className="text-center text-black">
             <p className="text-sm">Inspiring intellectual curiosity through cultural engagement</p>
-            <p className="text-xs mt-2 text-indigo-500">Built with dedication to lifelong learning</p>
+            <p className="text-xs mt-2 text-black">Built with dedication to lifelong learning</p>
           </div>
         </div>
       </footer>
