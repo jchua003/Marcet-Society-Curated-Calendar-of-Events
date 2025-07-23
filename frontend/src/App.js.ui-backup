@@ -106,15 +106,10 @@ const App = () => {
     title: 'YPC Studio Visit:',
     museum: 'moma',
     date: '2025-08-09',
-    time: '7:00 PM',
-    type: 'special_events',
-    description: 'YPC Studio Visit:
-Constanza Schaffner
-6:00–7:30 p.m.
-YPC offsite location
-Gallery experience',
-    city: 'New York',
-    price: 'See website',
+    time: '6:00–7:30 PM',
+    type: 'Gallery experience',
+    description: 'YPC Studio Visit: Constanza Schaffner',
+    location: 'YPC offsite location',
     duration: '2 hours',
     link: 'https://www.moma.org/calendar/events/10728'
   },
@@ -123,19 +118,12 @@ Gallery experience',
     title: 'Curatorial Walk-',
     museum: 'moma',
     date: '2025-09-04',
-    time: '7:00 PM',
-    type: 'special_events',
-    description: 'Curatorial Walk-
-Through of
-Jack Whitten:
-The Messenger
-6:00–8:00 p.m.
-Sold out
-MoMA, Floor 6
-Gallery experience,
-for members',
+    time: '6:00–8:00 PM',
+    type: 'Gallery experience',
+    description: 'Curatorial Walk- Through of Jack Whitten: The Messenger',
+    price: 'Sold out',
+    location: 'MoMA, Floor 6',
     city: 'New York',
-    price: 'See website',
     duration: '2 hours',
     link: 'https://www.moma.org/calendar/events/10770'
   },
@@ -144,14 +132,10 @@ for members',
     title: 'UNIQLO Friday Nights',
     museum: 'moma',
     date: '2025-08-24',
-    time: '7:00 PM',
-    type: 'special_events',
-    description: 'UNIQLO Friday Nights
-5:30–8:30 p.m.
-MoMA
-Gallery experience',
+    time: '5:30–8:30 PM',
+    type: 'Gallery experience',
+    description: 'UNIQLO Friday Nights',
     city: 'New York',
-    price: 'See website',
     duration: '2 hours',
     link: 'https://www.moma.org/calendar/events/10253'
   },
@@ -160,14 +144,11 @@ Gallery experience',
     title: 'Drop-in Drawing',
     museum: 'moma',
     date: '2025-08-28',
-    time: '7:00 PM',
-    type: 'special_events',
-    description: 'Drop-in Drawing
-5:30–7:30 p.m.
-MoMA, Floor 1
-Gallery experience',
+    time: '5:30–7:30 PM',
+    type: 'Gallery experience',
+    description: 'Drop-in Drawing', 
+    location: 'MoMA, Floor 1',
     city: 'New York',
-    price: 'See website',
     duration: '2 hours',
     link: 'https://www.moma.org/calendar/events/10619'
   },
@@ -176,15 +157,10 @@ Gallery experience',
     title: 'Member Early Hour',
     museum: 'moma',
     date: '2025-08-27',
-    time: '7:00 PM',
-    type: 'special_events',
-    description: 'Member Early Hour
-9:30–10:30 a.m.
-MoMA
-Gallery experience,
-for members',
+    time: '9:30–10:30 AM',
+    type: 'Gallery experience',
+    description: 'Member Early Hour',
     city: 'New York',
-    price: 'See website',
     duration: '2 hours',
     link: 'https://www.moma.org/calendar/events/7435'
   },
@@ -193,15 +169,11 @@ for members',
     title: 'Before-Hours Tours',
     museum: 'moma',
     date: '2025-08-18',
-    time: '7:00 PM',
-    type: 'tours',
-    description: 'Before-Hours Tours
-with an Art Historian
-9:30–10:30 a.m.
-MoMA, Floor 5
-Gallery experience',
+    time: '9:30–10:30 AM',
+    type: 'Gallery experience',
+    description: 'Before-Hours Tours with an Art Historian',
+    location: 'MoMA, Floor 5',
     city: 'New York',
-    price: 'See website',
     duration: '2 hours',
     link: 'https://www.moma.org/calendar/events/10165'
   },
@@ -214,7 +186,6 @@ Gallery experience',
     type: 'exhibitions',
     description: 'Exhibitions',
     city: 'New York',
-    price: 'See website',
     duration: '2 hours',
     link: 'https://www.metmuseum.org/exhibitions'
   },
@@ -227,7 +198,6 @@ Gallery experience',
     type: 'tours',
     description: 'Free Tours',
     city: 'New York',
-    price: 'See website',
     duration: '2 hours',
     link: 'https://www.metmuseum.org/tours'
   },
@@ -240,7 +210,6 @@ Gallery experience',
     type: 'exhibitions',
     description: 'Exhibitions',
     city: 'New York',
-    price: 'See website',
     duration: '2 hours',
     link: 'https://www.nyhistory.org/womens-history'
   },
@@ -253,7 +222,6 @@ Gallery experience',
     type: 'special_events',
     description: 'Diane and Adam E. Max Conference on Women’s History',
     city: 'New York',
-    price: 'See website',
     duration: '2 hours',
     link: 'https://www.nyhistory.org/womens-history'
   },
@@ -266,7 +234,6 @@ Gallery experience',
     type: 'special_events',
     description: 'Upcoming Events',
     city: 'New York',
-    price: 'See website',
     duration: '2 hours',
     link: 'https://asiasociety.org/new-york/events'
   },
@@ -316,9 +283,7 @@ Gallery experience',
     date: '2025-08-06',
     time: '7:00 PM',
     type: 'panel_discussions',
-    description: 'IFA-Frick Symposium on the History of Art
-Digital Art History
-Emerging Scholars',
+    description: 'IFA-Frick Symposium on the History of Art Digital Art History Emerging Scholars',
     city: 'New York',
     price: 'See website',
     duration: '2 hours',
@@ -575,163 +540,17 @@ Emerging Scholars',
     id: 35,
     title: 'Person, Place, Thing with Randy Cohen: Steve Clay and M.C. Kinniburgh',
     museum: 'grolier_club',
-    date: '2025-08-13',
-    time: '7:00 PM',
+    date: '2025-07-26',
+    time: '6:00 PM',
     type: 'special_events',
-    description: 'Person, Place, Thing with Randy Cohen: Steve Clay and M.C. Kinniburgh
-Thu, Jun 26 • 6:00 PM
-Free',
+    description: 'Person, Place, Thing with Randy Cohen: Steve Clay and M.C. Kinniburgh',
     city: 'New York',
-    price: 'See website',
+    price: 'Free',
     duration: '2 hours',
     link: 'https://www.eventbrite.com/e/person-place-thing-with-randy-cohen-steve-clay-and-mc-kinniburgh-tickets-1348772648299?aff=ebdsoporgprofile'
   },
   {
     id: 36,
-    title: 'Lecture: Celebrating Black Bookstores',
-    museum: 'grolier_club',
-    date: '2025-07-29',
-    time: '7:00 PM',
-    type: 'lectures',
-    description: 'Lecture: Celebrating Black Bookstores
-Fri, Jun 13 • 6:00 PM
-Free',
-    city: 'New York',
-    price: 'See website',
-    duration: '2 hours',
-    link: 'https://www.eventbrite.com/e/lecture-celebrating-black-bookstores-tickets-1367365500019?aff=ebdsoporgprofile'
-  },
-  {
-    id: 37,
-    title: '19th-Century Novels Revived by Mandylion Press',
-    museum: 'grolier_club',
-    date: '2025-09-01',
-    time: '7:00 PM',
-    type: 'special_events',
-    description: '19th-Century Novels Revived by Mandylion Press
-Tue, Jun 3 • 6:30 PM
-Free',
-    city: 'New York',
-    price: 'See website',
-    duration: '2 hours',
-    link: 'https://www.eventbrite.com/e/19th-century-novels-revived-by-mandylion-press-tickets-1256037444809?aff=ebdsoporgprofile'
-  },
-  {
-    id: 38,
-    title: 'Lecture: Bettina von Arnim and Goethe\'s Letters',
-    museum: 'grolier_club',
-    date: '2025-08-07',
-    time: '7:00 PM',
-    type: 'lectures',
-    description: 'Lecture: Bettina von Arnim and Goethe\'s Letters
-Thu, May 29 • 6:00 PM
-Free',
-    city: 'New York',
-    price: 'See website',
-    duration: '2 hours',
-    link: 'https://www.eventbrite.com/e/lecture-bettina-von-arnim-and-goethes-letters-tickets-1274474791409?aff=ebdsoporgprofile'
-  },
-  {
-    id: 39,
-    title: 'After Words: A Roundtable on Visual Poetry',
-    museum: 'grolier_club',
-    date: '2025-08-16',
-    time: '7:00 PM',
-    type: 'special_events',
-    description: 'After Words: A Roundtable on Visual Poetry
-Thu, May 22 • 6:00 PM
-Free',
-    city: 'New York',
-    price: 'See website',
-    duration: '2 hours',
-    link: 'https://www.eventbrite.com/e/after-words-a-roundtable-on-visual-poetry-tickets-1269543902989?aff=ebdsoporgprofile'
-  },
-  {
-    id: 40,
-    title: 'Lecture: UFOs, Men in Black, and the Unbelievable Life of Gray Barker',
-    museum: 'grolier_club',
-    date: '2025-08-22',
-    time: '7:00 PM',
-    type: 'lectures',
-    description: 'Lecture: UFOs, Men in Black, and the Unbelievable Life of Gray Barker
-Mon, May 19 • 6:00 PM
-Free',
-    city: 'New York',
-    price: 'See website',
-    duration: '2 hours',
-    link: 'https://www.eventbrite.com/e/lecture-ufos-men-in-black-and-the-unbelievable-life-of-gray-barker-tickets-1259769176519?aff=ebdsoporgprofile'
-  },
-  {
-    id: 41,
-    title: 'Code Name Puritan: A Grolierite Spy',
-    museum: 'grolier_club',
-    date: '2025-08-16',
-    time: '7:00 PM',
-    type: 'special_events',
-    description: 'Code Name Puritan: A Grolierite Spy
-Tue, May 13 • 6:30 PM
-Free',
-    city: 'New York',
-    price: 'See website',
-    duration: '2 hours',
-    link: 'https://www.eventbrite.com/e/code-name-puritan-a-grolierite-spy-tickets-1274423728679?aff=ebdsoporgprofile'
-  },
-  {
-    id: 42,
-    title: 'Virtual Lecture: Richard Kopley & Susan Jaffe Tane on Edgar Allan Poe',
-    museum: 'grolier_club',
-    date: '2025-08-18',
-    time: '7:00 PM',
-    type: 'lectures',
-    description: 'Virtual Lecture: Richard Kopley & Susan Jaffe Tane on Edgar Allan Poe
-Mon, May 12 • 10:00 PM UTC
-Free',
-    city: 'New York',
-    price: 'See website',
-    duration: '2 hours',
-    link: 'https://www.eventbrite.com/e/virtual-lecture-richard-kopley-susan-jaffe-tane-on-edgar-allan-poe-tickets-1274320199019?aff=ebdsoporgprofile'
-  },
-  {
-    id: 43,
-    title: 'EVENTS CALENDAR',
-    museum: 'national_arts_club',
-    date: '2025-08-17',
-    time: '7:00 PM',
-    type: 'special_events',
-    description: 'EVENTS CALENDAR',
-    city: 'New York',
-    price: 'See website',
-    duration: '2 hours',
-    link: 'https://www.nacnyc.org/Default.aspx?p=v35Calendar&title=Events%20Calendar&view=l3&ssid=323485&vnf=1'
-  },
-  {
-    id: 44,
-    title: 'CURRENT EXHIBITIONS',
-    museum: 'national_arts_club',
-    date: '2025-09-04',
-    time: '7:00 PM',
-    type: 'exhibitions',
-    description: 'CURRENT EXHIBITIONS',
-    city: 'New York',
-    price: 'See website',
-    duration: '2 hours',
-    link: 'https://www.nacnyc.org/arts-and-programs/exhibitions'
-  },
-  {
-    id: 45,
-    title: '403 - Forbidden',
-    museum: 'explorers_club',
-    date: '2025-08-24',
-    time: '7:00 PM',
-    type: 'special_events',
-    description: '403 - Forbidden',
-    city: 'New York',
-    price: 'See website',
-    duration: '2 hours',
-    link: 'https://www.explorers.org/calendar-of-events/month/'
-  },
-  {
-    id: 46,
     title: 'Follow PSNY on Eventbrite and Instagram to ensure you get notified whenever we post a new event. Don’t miss out!',
     museum: 'poetry_society',
     date: '2025-08-30',
@@ -744,7 +563,7 @@ Free',
     link: 'https://psny.eventbrite.com/'
   },
   {
-    id: 47,
+    id: 37,
     title: 'Join us at The New York Poetry Festival!',
     museum: 'poetry_society',
     date: '2025-08-21',
@@ -757,7 +576,7 @@ Free',
     link: 'https://poetrysocietyny.org/nycpofest'
   },
   {
-    id: 48,
+    id: 38,
     title: 'Join us at Poetry Camp 2025!',
     museum: 'poetry_society',
     date: '2025-08-13',
@@ -770,7 +589,7 @@ Free',
     link: 'https://poetrysocietyny.org/poetry-camp'
   },
   {
-    id: 49,
+    id: 39,
     title: 'lallianceny.org',
     museum: 'lalliance',
     date: '2025-09-05',
